@@ -11,7 +11,8 @@ class Game : public Scene
 private:
     Human* human;
     Plane* house;
-    Capsule* capsule;
+    //Capsule* capsule;
+    Plane* capsule;
     Field* field;
 
 public:

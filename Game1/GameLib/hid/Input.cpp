@@ -8,7 +8,9 @@ namespace Hirai
 {
 	LPDIRECTINPUT8 Input::d_input_ = nullptr;
 	LPDIRECTINPUTDEVICE8 Input::key_device_ = nullptr;
+	LPDIRECTINPUTDEVICE8 Input::mouse_ = nullptr;
 	BYTE Input::diks[256] = {};
+	DIMOUSESTATE2 Input::dims = { 0 };
 	BYTE* Input::pre_diks_ = nullptr;
 	bool Input::long_push_ = false;
 	bool Input::prev_push_ = false;
@@ -33,6 +35,16 @@ namespace Hirai
 			key_device_->GetDeviceState(sizeof(DIJOYSTATE2), &js);
 		}
 		return js;
+	}
+
+	DIMOUSESTATE2& Input::GetMouseInput()
+	{
+		dims = { 0 };
+		if (FAILED(mouse_->GetDeviceState(sizeof(DIMOUSESTATE2), &dims)))
+		{
+			mouse_->Acquire();
+		}
+		return dims;
 	}
 
 	bool Input::Initialize(HWND hwnd)
@@ -93,10 +105,52 @@ namespace Hirai
 		return true;
 	}
 
+	bool Input::InitializeForMouse(HWND hwnd)
+	{
+		if (FAILED(DirectInput8Create(GetModuleHandle(nullptr),
+			DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&d_input_,
+			nullptr)))
+		{
+			MessageBox(0, TEXT("Inputクラスの初期化中にエラーが発生しました。"), NULL, MB_OK);
+			return false;
+		}
+
+		if (FAILED(d_input_->CreateDevice(GUID_SysMouse, &mouse_, nullptr)))
+		{
+			MessageBox(0, TEXT("Inputクラスの初期化中にエラーが発生しました。"), NULL, MB_OK);
+			return false;
+		}
+
+		// デバイスをマウスに設定
+		if (FAILED(mouse_->SetDataFormat(&c_dfDIMouse2)))
+		{
+			MessageBox(0, TEXT("Inputクラスの初期化中にエラーが発生しました。"), NULL, MB_OK);
+			return false;
+		}
+
+		// 強調レベルの設定
+		if (FAILED(mouse_->SetCooperativeLevel(
+			hwnd, DISCL_NONEXCLUSIVE | DISCL_FOREGROUND))
+		) {
+			MessageBox(0, TEXT("Inputクラスの初期化中にエラーが発生しました。"), NULL, MB_OK);
+			return false;
+		}
+
+		// デバイスを取得
+		if (FAILED(mouse_->Acquire()))
+		{
+			MessageBox(0, TEXT("Inputクラスの初期化中にエラーが発生しました。"), NULL, MB_OK);
+			return false;
+		}
+
+		return true;
+	}
+
 	void Input::Finalize()
 	{
 		if (key_device_) key_device_->Unacquire();
 		SAFE_RELEASE(key_device_);
+		SAFE_RELEASE(mouse_);
 		SAFE_RELEASE(d_input_);
 	}
 

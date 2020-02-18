@@ -111,6 +111,12 @@
     <ClInclude Include="field\Field.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="GameLib\utility\CSVReader.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="object\Virus.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game1.cpp">
@@ -186,6 +192,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="field\Field.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\utility\CSVReader.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="object\Virus.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

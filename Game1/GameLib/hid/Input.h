@@ -36,7 +36,11 @@ namespace Hirai
 		// joyスティック
 		static DIJOYSTATE2 GetJoyInput();
 
+		// マウス
+		static DIMOUSESTATE2& GetMouseInput();
+
 		static bool Initialize(HWND hwnd);
+		static bool InitializeForMouse(HWND hwnd);
 		static void Finalize();
 
 	private:
@@ -44,7 +48,9 @@ namespace Hirai
 
 		static LPDIRECTINPUT8 d_input_;
 		static LPDIRECTINPUTDEVICE8 key_device_;
+		static LPDIRECTINPUTDEVICE8 mouse_;
 		static BYTE diks[256];
+		static DIMOUSESTATE2 dims;
 
 		// 1フレーム前のキー情報
 		static BYTE* pre_diks_;
