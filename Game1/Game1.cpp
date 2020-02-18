@@ -147,13 +147,20 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
            NULL);
        return 1;
    }
-   if (!Input::Initialize(hWnd)) {
+   if (!Input::InitializeForMouse(hWnd)) {
        MessageBox(NULL,
            _T("インプットデバイスの初期化に失敗しました。"),
            _T("Error"),
            NULL);
        return 1;
    }
+   //if (!Input::Initialize(hWnd)) {
+   //    MessageBox(NULL,
+   //        _T("インプットデバイスの初期化に失敗しました。"),
+   //        _T("Error"),
+   //        NULL);
+   //    return 1;
+   //}
    return TRUE;
 }
 
@@ -196,6 +203,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             EndPaint(hWnd, &ps);
         }
         break;
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_ESCAPE:
+            //終了メッセージを発生させる
+            PostMessage(hWnd, WM_CLOSE, 0, 0);
+            break;
+        default:
+            break;
+        }
     case WM_DESTROY:
         PostQuitMessage(0);
         break;

@@ -27,7 +27,7 @@ public:
 	void Update(Vector2 center) { center_ = center; }
 
 	Vector2 center_;
-	Vector2 box_width_;
+	Vector2 box_width_;	// 1•Ó‚Ì”¼•ª‚Ì’·‚³‚ğİ’è‚·‚é‚±‚Æ
 };
 
 class SphereCollider : public Collider

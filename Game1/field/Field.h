@@ -18,8 +18,10 @@ struct Config
 
 class Field
 {
-private:
+public:
     std::vector<Virus*> viruses;
+
+private:
     std::vector<Config> virusConfig;
     int elapsedTime, startTime;
     int currentOrder;
