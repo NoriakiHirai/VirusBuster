@@ -35,6 +35,8 @@ public:
 	void SetTag(string tag) { tag_ = tag; }
 	string Name() const;
 	D3DXVECTOR3 GetObjectPosition() const;
+	bool IsStarted() const { return started_; }
+	void SetStarted(bool st) { started_ = st; }
 	
 	virtual void Start() {}
 	virtual void Update() {}

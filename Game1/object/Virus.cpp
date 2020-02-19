@@ -35,8 +35,8 @@ void Virus::Update()
     BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
     bc->Update(Vector2{ local_position_.x, local_position_.y });
 
-    // íœ‚³‚ê‚Ä‚©‚çA1•bŒã‚É•œŠˆ‚·‚é
-    if (!IsActive() && ElapsedTime() >= 5000) {
+    // íœ‚³‚ê‚Ä‚©‚çAˆê’èŽžŠÔŒã‚É•œŠˆ‚·‚é
+    if (!IsActive() && ElapsedTime() >= 10000) {
         if (!bc->Check(outOfMultiply)) {
             SetActive(true);
         }

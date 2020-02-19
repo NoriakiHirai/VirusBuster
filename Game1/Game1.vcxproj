@@ -159,7 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Behavior.h" />
+    <ClInclude Include="object\Behavior.h" />
     <ClInclude Include="GameLib\utility\CSVReader.h" />
     <ClInclude Include="GameLib\utility\InnerTimer.h" />
     <ClInclude Include="object\Capsule.h" />
@@ -197,7 +197,7 @@
     <ClInclude Include="object\Virus.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Behavior.cpp" />
+    <ClCompile Include="object\Behavior.cpp" />
     <ClCompile Include="GameLib\utility\CSVReader.cpp" />
     <ClCompile Include="GameLib\utility\InnerTimer.cpp" />
     <ClCompile Include="object\Capsule.cpp" />

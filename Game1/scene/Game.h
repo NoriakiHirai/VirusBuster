@@ -10,6 +10,7 @@ class Game : public Scene
 {
 private:
     Human* human;
+    Human* human2;
     Plane* house;
     //Capsule* capsule;
     Plane* capsule;

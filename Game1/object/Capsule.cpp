@@ -23,14 +23,14 @@ Capsule::~Capsule()
 void Capsule::Initialize()
 {
     local_position_ = D3DXVECTOR3{ 400.f, 400.f, 0.f };
-    local_scale_ = D3DXVECTOR3{ 0.2f, 0.2f, 1.f };
+    local_scale_ = D3DXVECTOR3{ 0.4f, 0.4f, 1.f };
 
     BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
     bc->center_ = Vector2{
         local_position_.x,
         local_position_.y,
     };
-    bc->box_width_ = Vector2{ 20.f, 20.f };   // é·ä±è¨Ç≥ÇﬂÇ…ê›íË
+    bc->box_width_ = Vector2{ 40.f, 40.f };   // é·ä±è¨Ç≥ÇﬂÇ…ê›íË
 }
 
 void Capsule::Update()

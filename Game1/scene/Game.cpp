@@ -11,6 +11,7 @@
 #include "../object/Capsule.h"
 #include "../object/Virus.h"
 #include "../Game1.h"
+#include "../object/Behavior.h"
 
 static const float HOUSE_POS_X = 736.f;
 static const float HOUSE_POS_Y = 536.f;
@@ -18,6 +19,11 @@ static const float HOUSE_POS_Y = 536.f;
 Game::Game()
 {
     human = new Human("texture/GameParts.tga", 256, 256);
+    Behavior1* bh1 = new Behavior1(
+        D3DXVECTOR3{ 0.5f, 0.f, 0.f },
+        D3DXVECTOR3{ 32.f, 568.f, 0.f }
+    );
+    human->AddComponent("Behaviour", bh1);
 
     house = new Plane("texture/GameParts.tga", 256, 256);
     ((UIRenderer*)house->GetComponent("UIRenderer"))
@@ -38,6 +44,7 @@ Game::Game()
 Game::~Game()
 {
     SAFE_DELETE(human);
+    SAFE_DELETE(human2);
     SAFE_DELETE(house);
     //SAFE_DELETE(virus);
     SAFE_DELETE(capsule);

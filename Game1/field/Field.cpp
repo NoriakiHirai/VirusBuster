@@ -41,8 +41,10 @@ void Field::Initialize()
     start = end = currentOrder = 1;
     startTime = timeGetTime();
     Virus* virus = new Virus("texture/GameParts.tga", 256, 256);
-    float x = SQUARE_X * (float)(virusConfig[0].indexX) + VIRUS_OFFSET;
-    float y = SQUARE_Y * (float)(virusConfig[0].indexY) + VIRUS_OFFSET;
+    float x = DISPLAY_WIDTH_HALF;
+    float y = DISPLAY_HEIGHT_HALF;
+    //float x = SQUARE_X * (float)(virusConfig[0].indexX) + VIRUS_OFFSET;
+    //float y = SQUARE_Y * (float)(virusConfig[0].indexY) + VIRUS_OFFSET;
     virus->local_position_ = D3DXVECTOR3{
         x, y, 0.f
     };
@@ -75,35 +77,63 @@ void Field::SetOutOfMultiply(const BoxCollider& col)
 
 void Field::MultiplyViruses()
 {
-    if (currentOrder > ORDER_MAX) return;
-
-    currentOrder += 2;
-    start = end + 1;
-    end = currentOrder * currentOrder;
-    int length = virusConfig.size() - 1;
-    if (end > length) {
-        end = length;
-    }
-
+    if (currentOrder > 16) return;
+    int virusMax = (currentOrder + 1) * (currentOrder + 1);
     Virus* virus = nullptr;
     BoxCollider* col = nullptr;
-    for (auto i = start; virusConfig[i - 1].order <= end; ++i) {
-        virus = new Virus("texture/GameParts.tga", 256, 256);
-        float x = SQUARE_X * (float)(virusConfig[i - 1].indexX) + VIRUS_OFFSET;
-        float y = SQUARE_Y * (float)(virusConfig[i - 1].indexY) + VIRUS_OFFSET;
-        virus->local_position_ = D3DXVECTOR3{
-            x, y, 1.f
-        };
-        virus->local_scale_ = D3DXVECTOR3{ 0.1f, 0.1f, 1.f };
-        virus->SetLayer(Layer::kStage);
-        col = (BoxCollider*)virus->GetComponent("BoxCollider");
-        col->center_.x = virus->local_position_.x;
-        col->center_.y = virus->local_position_.y;
-        if (col->Check(outOfMultiply)) {
-            virus->SetActive(false);
-        }
-        viruses.push_back(virus);
+    // theta = rad * (180 / PI);
+    float theta = (360.f / virusMax) * (D3DX_PI / 180.f);
+    for (auto i = 0; i < virusMax; ++i) {
+         virus = new Virus("texture/GameParts.tga", 256, 256);
+         // x = (中心座標） + cos(角度）* 半径
+         float x = DISPLAY_WIDTH_HALF + cosf(theta * i) * (35.f * currentOrder);
+         float y = DISPLAY_HEIGHT_HALF + sinf(theta * i) * (35.f * currentOrder);
+         //float x = SQUARE_X * (float)(virusConfig[i - 1].indexX) + VIRUS_OFFSET;
+         //float y = SQUARE_Y * (float)(virusConfig[i - 1].indexY) + VIRUS_OFFSET;
+         virus->local_position_ = D3DXVECTOR3{
+             x, y, 1.f
+         };
+         virus->local_scale_ = D3DXVECTOR3{ 0.1f, 0.1f, 1.f };
+         virus->SetLayer(Layer::kStage);
+         col = (BoxCollider*)virus->GetComponent("BoxCollider");
+         col->center_.x = virus->local_position_.x;
+         col->center_.y = virus->local_position_.y;
+         if (col->Check(outOfMultiply)) {
+             virus->SetActive(false);
+         }
+         viruses.push_back(virus);
     }
+    currentOrder += 1;
+
+
+     //if (currentOrder > ORDER_MAX) return;
+    //currentOrder += 2;
+    //start = end + 1;
+    //end = currentOrder * currentOrder;
+    //int length = virusConfig.size() - 1;
+    //if (end > length) {
+    //    end = length;
+    //}
+
+    //Virus* virus = nullptr;
+    //BoxCollider* col = nullptr;
+    //for (auto i = start; virusConfig[i - 1].order <= end; ++i) {
+    //    virus = new Virus("texture/GameParts.tga", 256, 256);
+    //    float x = SQUARE_X * (float)(virusConfig[i - 1].indexX) + VIRUS_OFFSET;
+    //    float y = SQUARE_Y * (float)(virusConfig[i - 1].indexY) + VIRUS_OFFSET;
+    //    virus->local_position_ = D3DXVECTOR3{
+    //        x, y, 1.f
+    //    };
+    //    virus->local_scale_ = D3DXVECTOR3{ 0.1f, 0.1f, 1.f };
+    //    virus->SetLayer(Layer::kStage);
+    //    col = (BoxCollider*)virus->GetComponent("BoxCollider");
+    //    col->center_.x = virus->local_position_.x;
+    //    col->center_.y = virus->local_position_.y;
+    //    if (col->Check(outOfMultiply)) {
+    //        virus->SetActive(false);
+    //    }
+    //    viruses.push_back(virus);
+    //}
 }
 
 void ReadConfigFile(const char* configFile, std::vector<Config>* vec)
