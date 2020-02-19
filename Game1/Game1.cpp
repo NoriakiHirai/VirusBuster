@@ -245,8 +245,8 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void AppInitialize()
 {
     Scene::InitializeScene();
-    //Scene::SetScene(new Title);
-    Scene::SetScene(new Game);
+    Scene::SetScene(new Title);
+    //Scene::SetScene(new Game);
 
     SpriteRenderer::Initialize();
     SpriteRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);

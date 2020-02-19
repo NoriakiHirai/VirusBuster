@@ -1,11 +1,18 @@
 #include "Field.h"
 #include <algorithm>
+#include <Windows.h>
 #include <d3dx9.h>
 #include <utility/CSVReader.h>
 #include <common/Timer.h>
+#include <dynamics/Collider.h>
+#include <common/utility.h>
 #include "../object/Virus.h"
+#include "../Game1.h"
 
-const int ORDER_MAX = 17;
+const int ORDER_MAX = 15;
+const float SQUARE_X = DISPLAY_WIDTH / 15.f;
+const float SQUARE_Y = DISPLAY_HEIGHT / 15.f;
+const float VIRUS_OFFSET = 26.5f;
 
 bool operator<(const Config& left, const Config& right)
 {
@@ -34,38 +41,20 @@ void Field::Initialize()
     start = end = currentOrder = 1;
     startTime = timeGetTime();
     Virus* virus = new Virus("texture/GameParts.tga", 256, 256);
-    float x = 50.f * (float)(virusConfig[0].indexX);
-    float y = 50.f * (float)(virusConfig[0].indexY) - 150.f;
+    float x = SQUARE_X * (float)(virusConfig[0].indexX) + VIRUS_OFFSET;
+    float y = SQUARE_Y * (float)(virusConfig[0].indexY) + VIRUS_OFFSET;
     virus->local_position_ = D3DXVECTOR3{
         x, y, 0.f
     };
     virus->local_scale_ = D3DXVECTOR3{ 0.1f, 0.1f, 1.f };
+    virus->SetLayer(Layer::kStage);
     viruses.push_back(virus);
 
-
-    //size_t lengthX = virusConfig[0].size();
-    //size_t lengthY = virusConfig.size();
-    //Virus* virus;
-    //float x, y;
-    //for (size_t i = 0; i < lengthY; ++i) {
-    //    for (size_t j = 0; j < lengthX; ++j) {
-    //        if (virusConfig[i][j] == 1) {
-    //            virus = new Virus("texture/GameParts.tga", 256, 256);
-    //            x = 50.f * (float)j;
-    //            y = 50.f * (float)i;
-    //            virus->local_position_ = D3DXVECTOR3{
-    //                x, y, 0.f
-    //            };
-    //            virus->local_scale_ = D3DXVECTOR3{ 0.1f, 0.1f, 1.f };
-    //            Viruses.push_back(virus);
-    //        }
-    //    }
-    //}
 }
 
 void Field::Update()
 {
-    // 2秒経過ごとにウイルスを増殖させる
+    // 一定時間経過ごとにウイルスを増殖させる
     if (elapsedTime >= 1000) {
         MultiplyViruses();
         elapsedTime = 0;
@@ -73,6 +62,14 @@ void Field::Update()
     }
     else {
         elapsedTime = timeGetTime() - startTime;
+    }
+}
+
+void Field::SetOutOfMultiply(const BoxCollider& col)
+{
+    outOfMultiply = col;
+    for (auto virus : viruses) {
+        virus->SetOutOfMultiply(col);
     }
 }
 
@@ -89,14 +86,22 @@ void Field::MultiplyViruses()
     }
 
     Virus* virus = nullptr;
+    BoxCollider* col = nullptr;
     for (auto i = start; virusConfig[i - 1].order <= end; ++i) {
         virus = new Virus("texture/GameParts.tga", 256, 256);
-        float x = 50.f * (float)(virusConfig[i - 1].indexX);
-        float y = 50.f * (float)(virusConfig[i - 1].indexY) - 150.f;
+        float x = SQUARE_X * (float)(virusConfig[i - 1].indexX) + VIRUS_OFFSET;
+        float y = SQUARE_Y * (float)(virusConfig[i - 1].indexY) + VIRUS_OFFSET;
         virus->local_position_ = D3DXVECTOR3{
-            x, y, 0.f
+            x, y, 1.f
         };
         virus->local_scale_ = D3DXVECTOR3{ 0.1f, 0.1f, 1.f };
+        virus->SetLayer(Layer::kStage);
+        col = (BoxCollider*)virus->GetComponent("BoxCollider");
+        col->center_.x = virus->local_position_.x;
+        col->center_.y = virus->local_position_.y;
+        if (col->Check(outOfMultiply)) {
+            virus->SetActive(false);
+        }
         viruses.push_back(virus);
     }
 }

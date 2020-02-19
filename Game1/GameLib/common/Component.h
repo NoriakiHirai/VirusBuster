@@ -23,6 +23,7 @@ class Component
 private:
 	GameObject* game_object_;
 	string		tag_;
+	bool started_;
 
 protected:
 	virtual ~Component() {}
@@ -34,6 +35,9 @@ public:
 	void SetTag(string tag) { tag_ = tag; }
 	string Name() const;
 	D3DXVECTOR3 GetObjectPosition() const;
+	
+	virtual void Start() {}
+	virtual void Update() {}
 };
 
 #endif // !GAME_LIB_GAME_LIB_COMPONENT_H_

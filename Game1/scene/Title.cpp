@@ -3,8 +3,9 @@
 #include <graphics/UIRenderer.h>
 #include <graphics/Sprite.h>
 #include <common/utility.h>
+#include <hid/Input.h>
 #include "../Game1.h"
-
+#include "Game.h"
 
 Title::Title()
 {
@@ -16,7 +17,8 @@ Title::Title()
 
 Title::~Title()
 {
-    SAFE_DELETE(title);
+    //SAFE_DELETE(title);
+    title->Destroy(title);
 }
 
 void Title::Initialize()
@@ -31,6 +33,12 @@ void Title::Initialize()
 
 void Title::Update()
 {
+    using Hirai::Input;
+    DIMOUSESTATE2& dims = Input::GetMouseInput();
+    if (dims.rgbButtons[0] && 0x80)
+    {
+        Scene::SetScene(new Game);
+    }
 }
 
 void Title::Draw()
@@ -40,4 +48,5 @@ void Title::Draw()
 
 void Title::Finalize()
 {
+    //GameObject::DeleteObjectAll();
 }

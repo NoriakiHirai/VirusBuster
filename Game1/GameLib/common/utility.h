@@ -2,7 +2,7 @@
 
 #define SAFE_DELETE(p) { \
     if (p) { \
-        delete(p); \
+        delete (p); \
         (p) = nullptr; \
     } \
 }

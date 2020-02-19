@@ -117,6 +117,12 @@
     <ClInclude Include="object\Virus.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="GameLib\utility\InnerTimer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Behavior.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game1.cpp">
@@ -198,6 +204,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="object\Virus.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\utility\InnerTimer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Behavior.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

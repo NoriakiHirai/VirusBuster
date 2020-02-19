@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <dynamics/Collider.h>
 
 class Virus;
 
@@ -27,6 +28,7 @@ private:
     int currentOrder;
     int start, end;
     int frameCount;
+    BoxCollider outOfMultiply;
 
 public:
     Field(const char* configFile);
@@ -34,6 +36,8 @@ public:
 
     void Initialize();
     void Update();
+    
+    void SetOutOfMultiply(const BoxCollider&);
 
 private:
     void MultiplyViruses();

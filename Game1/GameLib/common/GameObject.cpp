@@ -76,12 +76,15 @@ void GameObject::DrawObjectAll()
 	device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
 		D3DCOLOR_XRGB(255, 255, 255), 1.f, 0);
 	if (SUCCEEDED(device->BeginScene())) {
+		// ƒŒƒCƒ„[‡‚É•À‚×‘Ö‚¦
+		std::sort(game_object_list_.begin(), game_object_list_.end(), CompareLayer);
 		for (GameObject* obj : game_object_list_)
 		{
 			if (obj->CanRendering()) {
 				obj->Draw();
 			}
 		}
+
 	}
 	device->EndScene();
 	device->Present(nullptr, nullptr, nullptr, nullptr);

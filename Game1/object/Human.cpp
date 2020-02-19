@@ -19,7 +19,7 @@ Human::~Human()
 
 void Human::Initialize()
 {
-    local_position_ = D3DXVECTOR3{ 32.f, 568.f, 0.f };
+    local_position_ = D3DXVECTOR3{ 500.f, 568.f, 0.f };
     local_scale_ = D3DXVECTOR3{ 0.2f, 0.2f, 1.f };
     velocity = D3DXVECTOR3{0.5f, 0.f, 0.f};
 
@@ -48,4 +48,9 @@ void Human::Draw()
 
 void Human::Finalize()
 {
+}
+
+const D3DXVECTOR3 Human::NextPosition()
+{
+    return (local_position_ + velocity);
 }
