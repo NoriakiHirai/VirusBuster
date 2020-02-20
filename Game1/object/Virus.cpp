@@ -40,6 +40,9 @@ void Virus::Update()
         if (!bc->Check(outOfMultiply)) {
             SetActive(true);
         }
+        if (!bc->Check(outOfMultiply2)) {
+            SetActive(true);
+        }
     }
 }
 
@@ -54,7 +57,8 @@ void Virus::Finalize()
 {
 }
 
-void Virus::SetOutOfMultiply(const BoxCollider& range)
+void Virus::SetOutOfMultiply(const BoxCollider& range, const BoxCollider& range2)
 {
     outOfMultiply = range;
+    outOfMultiply2 = range2;
 }

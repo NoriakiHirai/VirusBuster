@@ -14,6 +14,7 @@ Capsule::Capsule(const char* textureName, int tex_w, int tex_h)
 
     BoxCollider* bc = new BoxCollider;
     AddComponent("BoxCollider", bc);
+    SetLayer(Layer::kUICursor);
 }
 
 Capsule::~Capsule()

@@ -16,11 +16,18 @@ private:
     Plane* capsule;
     Field* field;
     Plane* resultMsg;
+    Plane* stageName;
+    Plane* clickMsg;
 
     int phase;
-    int winner;
+    bool isClear;
+    int stage;
+    float waitTime;
 
 public:
+    static const float HOUSE_POS_X;
+    static const float HOUSE_POS_Y;
+
     Game();
     ~Game();
 
@@ -31,8 +38,11 @@ public:
 
 private:
     void GameMain();
-    void SetWinner(int);
+    void SetClear(bool);
     void SetPhase(int);
     void IsClear();
     void GameResult();
+    void SetStageNum(int);
+    void DispStageNum();
+    void PrepareStage(int);
 };

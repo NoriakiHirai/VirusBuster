@@ -5,6 +5,8 @@
 #include <common/utility.h>
 #include "Behavior.h"
 
+float Human::HUMAN_SPEED = 0.5f;
+
 Human::Human(const char* textureName, int tex_w, int tex_h)
     : Plane(textureName, tex_w, tex_h)
 {
@@ -13,6 +15,7 @@ Human::Human(const char* textureName, int tex_w, int tex_h)
         ->SetUV(0.f / 256.f, 128.f / 256.f, 64.f / 256.f, 64.f / 256.f);
     BoxCollider* bc = new BoxCollider;
     AddComponent("BoxCollider", bc);
+    SetLayer(Layer::kPlayer);
 }
 
 Human::Human(const char* textureName, int tex_w, int tex_h,
@@ -37,10 +40,7 @@ void Human::Initialize()
 {
     Component* behaviour = GetComponent("Behaviour");
     behaviour->Start();
-    //local_position_ = initPosision;
-    //local_position_ = D3DXVECTOR3{ 32.f, 568.f, 0.f };
     local_scale_ = D3DXVECTOR3{ 0.2f, 0.2f, 1.f };
-    //velocity = D3DXVECTOR3{0.5f, 0.f, 0.f};
 
     BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
     bc->center_ = Vector2{
@@ -52,6 +52,8 @@ void Human::Initialize()
 
 void Human::Update()
 {
+    if (!IsActive()) return;
+
     Component* behaviour = GetComponent("Behaviour");
     behaviour->Update();
     //local_position_ += velocity;

@@ -8,6 +8,7 @@ class Virus :
 {
 private:
     BoxCollider outOfMultiply;
+    BoxCollider outOfMultiply2;
 
 public:
     Virus(const char* textureName, int tex_w, int tex_h);
@@ -18,6 +19,5 @@ public:
 	virtual void Draw() override;
 	virtual void Finalize() override;
 
-    void SetOutOfMultiply(const BoxCollider&);
+    void SetOutOfMultiply(const BoxCollider& range, const BoxCollider& range2);
 };
-

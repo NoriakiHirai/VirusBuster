@@ -11,8 +11,11 @@ protected:
 
 
 public:
+    HumanBehaviour() {}
     HumanBehaviour(D3DXVECTOR3 vel, D3DXVECTOR3 pos);
     virtual ~HumanBehaviour() {}
+
+    void SetVelocity(D3DXVECTOR3);
 };
 
 class Behavior1 :

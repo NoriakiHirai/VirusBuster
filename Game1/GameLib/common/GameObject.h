@@ -24,6 +24,7 @@ enum Layer {
 	kCloud,
 	kStage,
 	kPlayer,
+	kUICursor,
 	kMsg,
 	kOther,
 };

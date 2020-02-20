@@ -10,6 +10,8 @@ private:
 	D3DXVECTOR3 initPosision;
 
 public:
+	static float HUMAN_SPEED;
+
 	Human(const char* textureName, int tex_w, int tex_h);
 	Human(const char* textureName, int tex_w, int tex_h,
 		float initPosX, float initPosY);
