@@ -57,18 +57,18 @@ Game::Game()
     stageName->SetLayer(Layer::kMsg);
     //clickMsg = new Plane("texture/sign.tga", 128, 512);
 
-    stage = 1;
+    stage = 2;
 }
 
 Game::~Game()
 {
-    SAFE_DELETE(human);
-    SAFE_DELETE(human2);
-    SAFE_DELETE(house);
-    //SAFE_DELETE(virus);
-    SAFE_DELETE(capsule);
+    human->Destroy(human);
+    human2->Destroy(human2);
+    house->Destroy(house);
+    capsule->Destroy(capsule);
+    resultMsg->Destroy(resultMsg);
+    stageName->Destroy(stageName);
     SAFE_DELETE(field);
-    SAFE_DELETE(resultMsg);
 }
 
 void Game::Initialize()
@@ -151,10 +151,11 @@ void Game::Draw()
 
 void Game::Finalize()
 {
-    SAFE_DELETE(human);
-    SAFE_DELETE(house);
-    SAFE_DELETE(capsule);
-    SAFE_DELETE(field);
+    //SAFE_DELETE(human);
+    //SAFE_DELETE(house);
+    //SAFE_DELETE(capsule);
+    //SAFE_DELETE(field);
+    //GameObject::DeleteObjectAll();
 }
 
 void Game::GameMain()
@@ -291,14 +292,14 @@ void Game::GameResult()
         else if (stage == 2) {
             if (isClear) {
                 // ステージ2ならタイトルに戻る
+                // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
                 Scene::SetScene(new Title);
             }
             else {
                 SetPhase(1);
                 Initialize();
+                field->DeleteVirus();
             }
-            field->DeleteVirus();
-            
         }
     }
 }

@@ -37,10 +37,8 @@ void Virus::Update()
 
     // íœ‚³‚ê‚Ä‚©‚çAˆê’èŽžŠÔŒã‚É•œŠˆ‚·‚é
     if (!IsActive() && ElapsedTime() >= 10000) {
-        if (!bc->Check(outOfMultiply)) {
-            SetActive(true);
-        }
-        if (!bc->Check(outOfMultiply2)) {
+        if (!bc->Check(outOfMultiply) && 
+            !bc->Check(outOfMultiply2)) {
             SetActive(true);
         }
     }
