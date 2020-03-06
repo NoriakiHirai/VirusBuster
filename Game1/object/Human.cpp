@@ -78,3 +78,25 @@ const D3DXVECTOR3 Human::NextPosition()
     return (local_position_ + velocity);
 }
 
+const BoxCollider Human::GetInviolableArea()
+{
+    BoxCollider* hCol = (BoxCollider*)GetComponent("BoxCollider");
+    BoxCollider col;
+    D3DXVECTOR3 pos = NextPosition();
+    col.center_.x = pos.x;
+    col.center_.y = pos.y;
+    col.box_width_ = hCol->box_width_;
+    col.box_width_.x += 10.f;
+    col.box_width_.y += 10.f;
+    col.box_width_.y += 10.f;
+
+    return col;
+}
+
+Human* Human::CreateHuman(HumanBehaviour* hb)
+{
+    Human* human = new Human("texture/GameParts.tga", 256, 256);
+    human->AddComponent("Behaviour", hb);
+    return human;
+}
+

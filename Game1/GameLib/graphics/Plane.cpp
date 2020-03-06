@@ -58,6 +58,7 @@ bool Plane::FadeIn::Update(Plane* plane)
 	if (is_fade_in_comp)
 	{
 		delete this;
+		plane->state = nullptr;
 		return true;
 	}
 	return false;
@@ -73,6 +74,7 @@ bool Plane::FadeOut::Update(Plane* plane)
 	if (a <= 0.f)
 	{
 		delete this;
+		plane->state = nullptr;
 		return true;
 	}
 

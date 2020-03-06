@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <scene/Scene.h>
 
 class Human;
@@ -7,10 +6,11 @@ class Plane;
 class Capsule;
 class Field;
 
-class Game : public Scene
+class Stage2 : public Scene 
 {
 private:
     Human* human;
+    Human* human2;
     Plane* house;
     //Capsule* capsule;
     Plane* capsule;
@@ -21,14 +21,15 @@ private:
 
     int phase;
     bool isClear;
+    //int stage;
     float waitTime;
 
 public:
     static const float HOUSE_POS_X;
     static const float HOUSE_POS_Y;
 
-    Game();
-    ~Game();
+    Stage2();
+    ~Stage2();
 
     void Initialize() override;
     void Update() override;
@@ -37,7 +38,7 @@ public:
 
 private:
     void GameMain();
-    void SetResultMsg(bool);
+    void SetResultMsg(bool iswin);
     void SetPhase(int);
     void IsClear();
     void GameResult();

@@ -2,6 +2,7 @@
 #include <graphics/Plane.h>
 
 class HumanBehaviour;
+class BoxCollider;
 
 class Human : public Plane
 {
@@ -23,4 +24,6 @@ public:
 	virtual void Finalize() override;
 
 	const D3DXVECTOR3 NextPosition();
+	const BoxCollider GetInviolableArea();
+	static Human* CreateHuman(HumanBehaviour* hb);
 };

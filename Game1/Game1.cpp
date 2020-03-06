@@ -3,6 +3,8 @@
 
 #include "framework.h"
 #include "Game1.h"
+#include <atlstr.h>
+#include <strstream>
 #include <graphics/DirectX.h>
 #include <scene/Scene.h>
 #include <graphics/TextureManager.h>
@@ -176,6 +178,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    std::ostrstream oss;
+
     switch (message)
     {
     case WM_COMMAND:
@@ -189,6 +193,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
+                break;
+            case IDM_HOWTOPLAY:
+                oss << "（操作方法）\n";
+                oss << "左クリック：決定\n";
+                oss << "マウス：カプセルを動かす\n\n";
+
+                oss << "（ルール）\n";
+                oss << "ウイルスが増殖してくるので、人に感染しないように\n";
+                oss << "マウスでカプセルを動かして、ウイルスを消していきます。\n";
+                oss << "人が家にたどり着くまでウイルスに感染しなかったらクリアです。\n";
+                oss << std::ends;
+                if (MessageBox(hWnd, CString(oss.str()), CString("遊び方"), MB_OK) == IDOK) {
+                    return 0;
+                }
                 break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);

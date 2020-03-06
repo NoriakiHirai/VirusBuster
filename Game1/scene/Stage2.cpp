@@ -1,5 +1,4 @@
-#include "Game.h"
-#include <vector>
+#include "Stage2.h"
 #include <common/utility.h>
 #include <common/Timer.h>
 #include <graphics/Plane.h>
@@ -13,13 +12,12 @@
 #include "../object/Virus.h"
 #include "../Game1.h"
 #include "../object/Behavior.h"
-#include "../scene/Stage2.h"
-#include "CommonData.h"
+#include "Title.h"
 
-const float Game::HOUSE_POS_X = 736.f;
-const float Game::HOUSE_POS_Y = 536.f;
+const float Stage2::HOUSE_POS_X = 736.f;
+const float Stage2::HOUSE_POS_Y = 64.f;
 
-Game::Game()
+Stage2::Stage2()
 {
     human = new Human("texture/GameParts.tga", 256, 256);
     Behavior1* bh1 = new Behavior1(
@@ -27,6 +25,13 @@ Game::Game()
         D3DXVECTOR3{ 64.f, 568.f, 0.f }
     );
     human->AddComponent("Behaviour", bh1);
+
+    human2 = new Human("texture/GameParts.tga", 256, 256);
+    Behavior2* bh2 = new Behavior2(
+        D3DXVECTOR3{ 0.f, -Human::HUMAN_SPEED, 0.f },
+        D3DXVECTOR3{ 32.f, 536.f, 0.f }
+    );
+    human2->AddComponent("Behaviour", bh2);
 
     house = new Plane("texture/GameParts.tga", 256, 256);
     ((UIRenderer*)house->GetComponent("UIRenderer"))
@@ -52,9 +57,10 @@ Game::Game()
     stageName->SetLayer(Layer::kMsg);
 }
 
-Game::~Game()
+Stage2::~Stage2()
 {
     human->Destroy(human);
+    human2->Destroy(human2);
     house->Destroy(house);
     capsule->Destroy(capsule);
     resultMsg->Destroy(resultMsg);
@@ -62,20 +68,17 @@ Game::~Game()
     SAFE_DELETE(field);
 }
 
-void Game::Initialize()
+void Stage2::Initialize()
 {
-    human->SetActive(true);
-    Behavior1* bh1 = (Behavior1*)human->GetComponent("Behaviour");
-    bh1->SetVelocity(D3DXVECTOR3{ 10.f * Human::HUMAN_SPEED, 0.f, 0.f });
-    
     house->local_position_ = D3DXVECTOR3{ HOUSE_POS_X, HOUSE_POS_Y, 0.f };
+    house->local_scale_ = D3DXVECTOR3{ 0.5f, 0.5f, 1.f };
 
     // ステージプレートの設定
-    Sprite *sprite = ((UIRenderer*)stageName->GetComponent("UIRenderer"))
+    Sprite* sprite = ((UIRenderer*)stageName->GetComponent("UIRenderer"))
         ->GetSprite();
     sprite->SetAlpha(1.f);
-    sprite->SetUV(0.f / 128.f, 224.f / 512.f, 128.f / 128.f, 64.f / 512.f);
-    
+    sprite->SetUV(0.f / 128.f, 288.f / 512.f, 128.f / 128.f, 64.f / 512.f);
+
     field->Initialize();
 
     stageName->SetActive(true);
@@ -87,9 +90,10 @@ void Game::Initialize()
 
     phase = 1;
     isClear = false;
+
 }
 
-void Game::Update()
+void Stage2::Update()
 {
     Timer::Update();
     IsClear();
@@ -110,28 +114,27 @@ void Game::Update()
     }
 }
 
-void Game::Draw()
+void Stage2::Draw()
 {
     GameObject::DrawObjectAll();
 }
 
-void Game::Finalize()
+void Stage2::Finalize()
 {
-    //SAFE_DELETE(human);
-    //SAFE_DELETE(house);
-    //SAFE_DELETE(capsule);
-    //SAFE_DELETE(field);
-    //GameObject::DeleteObjectAll();
 }
 
-void Game::GameMain()
+void Stage2::GameMain()
 {
-    if (!human) return;
+    if (!human && !human2) return;
     // ウイルスの増殖など
     // 人が出現したウイルスでいきなり消されないように発生範囲外を設定する
     BoxCollider* hCol = (BoxCollider*)human->GetComponent("BoxCollider");
     BoxCollider col = human->GetInviolableArea();
-    field->SetOutOfMultiply(col, col);
+
+    BoxCollider* hCol2 = (BoxCollider*)human2->GetComponent("BoxCollider");
+    BoxCollider col2 = human2->GetInviolableArea();
+
+    field->SetOutOfMultiply(col, col2);
     field->Update();
 
     GameObject::UpdateObjectAll();
@@ -158,6 +161,13 @@ void Game::GameMain()
             break;
         }
 
+        if (hCol2->Check(*vCol)) {
+            human2->SetActive(false);
+            SetResultMsg(false);
+            SetPhase(3);
+            break;
+        }
+
         if (cCol->Check(*vCol)) {
             (*itr)->SetActive(false);
             (*itr)->TimerReset();
@@ -166,7 +176,7 @@ void Game::GameMain()
     }
 }
 
-void Game::SetResultMsg(bool isWin)
+void Stage2::SetResultMsg(bool isWin)
 {
     isClear = isWin;
     resultMsg->SetActive(true);
@@ -182,22 +192,25 @@ void Game::SetResultMsg(bool isWin)
     }
 }
 
-void Game::SetPhase(int ph)
+void Stage2::SetPhase(int ph)
 {
     phase = ph;
 }
 
-void Game::IsClear()
+void Stage2::IsClear()
 {
     if (human->local_position_.x >= house->local_position_.x &&
-        human->local_position_.y <= house->local_position_.y + 32.f)
+        human->local_position_.y <= house->local_position_.y + 32.f &&
+        human2->local_position_.x >= house->local_position_.x &&
+        human2->local_position_.y <= house->local_position_.y + 32.f
+    )
     {
         SetResultMsg(true);
         SetPhase(3);
     }
 }
 
-void Game::GameResult()
+void Stage2::GameResult()
 {
     // クリックすると次のステージへ
     using Hirai::Input;
@@ -205,20 +218,21 @@ void Game::GameResult()
     if (dims.rgbButtons[0] && 0x80)
     {
         resultMsg->SetActive(false);
-        field->DeleteVirus();
         if (isClear) {
-            CommonData::SetCurrentStage(2);
-            Scene::SetScene(new Stage2);
+            // ステージ2ならタイトルに戻る
+            // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
+            Scene::SetScene(new Title);
+            //Scene::SetScene(new Stage3);
         }
         else {
             SetPhase(1);
             Initialize();
+            field->DeleteVirus();
         }
     }
 }
 
-
-void Game::DispStageNum()
+void Stage2::DispStageNum()
 {
     waitTime -= Timer::DeltaTime();
     if (waitTime <= 0.f) {
