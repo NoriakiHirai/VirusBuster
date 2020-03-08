@@ -30,8 +30,7 @@ private:
     int currentOrder;
     int start, end;
     int frameCount;
-    BoxCollider outOfMultiply;
-    BoxCollider outOfMultiply2;
+    static std::vector<BoxCollider> inviolableAreas;
 
 public:
     Field(const char* configFile);
@@ -39,11 +38,14 @@ public:
 
     void Initialize();
     void Update();
-    void DeleteVirus();
+    void Finalize();
     
-    void SetOutOfMultiply(const BoxCollider& range, const BoxCollider& range2);
+    void SetInviolableArea(const BoxCollider& range, const BoxCollider& range2);
+    void SetInviolableArea(const BoxCollider& area);
+    static const std::vector<BoxCollider>& GetAllInviolableArea();
 
 private:
+    void DeleteVirus();
     void MultiplyViruses();
     void MultiplyViruses(POINT center);
 };

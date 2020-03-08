@@ -18,29 +18,33 @@ public:
     void SetVelocity(D3DXVECTOR3);
 };
 
-class Behavior1 :
+class Behaviour1 :
     public HumanBehaviour
 {
 protected:
 
 public:
-    Behavior1(D3DXVECTOR3 vel, D3DXVECTOR3 pos);
-    ~Behavior1() {}
+    Behaviour1(D3DXVECTOR3 vel, D3DXVECTOR3 pos);
+    ~Behaviour1() {}
     
     virtual void Start() override;
     virtual void Update() override;
+
+    virtual void Stop();
 };
 
-class Behavior2 :
+class Behaviour2 :
     public HumanBehaviour
 {
 protected:
 
 public:
-    Behavior2(D3DXVECTOR3 vel, D3DXVECTOR3 pos);
-    ~Behavior2() {}
+    Behaviour2(D3DXVECTOR3 vel, D3DXVECTOR3 pos);
+    ~Behaviour2() {}
 
     virtual void Start() override;
     virtual void Update() override;
+
+    virtual void Stop();
 };
 

@@ -2,6 +2,8 @@
 #include <graphics/UIRenderer.h>
 #include <graphics/Sprite.h>
 #include <dynamics/Collider.h>
+#include "../scene/CommonData.h"
+#include "../field/Field.h"
 
 Virus::Virus(const char* textureName, int tex_w, int tex_h)
     : Plane(textureName, tex_w, tex_h)
@@ -31,14 +33,21 @@ void Virus::Initialize()
 
 void Virus::Update()
 {
-    // colliderの座標を更新
-    BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
-    bc->Update(Vector2{ local_position_.x, local_position_.y });
+    //// colliderの座標を更新
+    //BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
+    //bc->Update(Vector2{ local_position_.x, local_position_.y });
 
     // 削除されてから、一定時間後に復活する
     if (!IsActive() && ElapsedTime() >= 10000) {
-        if (!bc->Check(outOfMultiply) && 
-            !bc->Check(outOfMultiply2)) {
+        BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
+        std::vector<BoxCollider> inviolableAreas = Field::GetAllInviolableArea();
+        bool canMultiply = true;
+        for (auto range : inviolableAreas) {
+            if (bc->Check(range)) {
+                canMultiply = false;
+            }
+        }
+        if (canMultiply) {
             SetActive(true);
         }
     }
@@ -48,15 +57,9 @@ void Virus::Draw()
 {
     if (!IsActive()) return;
     UIRenderer* renderer = (UIRenderer*)GetComponent("UIRenderer");
-    renderer->Draw(*this);
+    //renderer->Draw(*this);
 }
 
 void Virus::Finalize()
 {
-}
-
-void Virus::SetOutOfMultiply(const BoxCollider& range, const BoxCollider& range2)
-{
-    outOfMultiply = range;
-    outOfMultiply2 = range2;
 }

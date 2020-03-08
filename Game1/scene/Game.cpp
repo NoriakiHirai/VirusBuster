@@ -12,7 +12,7 @@
 #include "../object/Capsule.h"
 #include "../object/Virus.h"
 #include "../Game1.h"
-#include "../object/Behavior.h"
+#include "../object/Behaviour.h"
 #include "../scene/Stage2.h"
 #include "CommonData.h"
 
@@ -22,7 +22,7 @@ const float Game::HOUSE_POS_Y = 536.f;
 Game::Game()
 {
     human = new Human("texture/GameParts.tga", 256, 256);
-    Behavior1* bh1 = new Behavior1(
+    Behaviour1* bh1 = new Behaviour1(
         D3DXVECTOR3{ Human::HUMAN_SPEED, 0.f, 0.f },
         D3DXVECTOR3{ 64.f, 568.f, 0.f }
     );
@@ -65,8 +65,8 @@ Game::~Game()
 void Game::Initialize()
 {
     human->SetActive(true);
-    Behavior1* bh1 = (Behavior1*)human->GetComponent("Behaviour");
-    bh1->SetVelocity(D3DXVECTOR3{ 10.f * Human::HUMAN_SPEED, 0.f, 0.f });
+    Behaviour1* bh1 = (Behaviour1*)human->GetComponent("Behaviour");
+    bh1->SetVelocity(D3DXVECTOR3{ Human::HUMAN_SPEED, 0.f, 0.f });
     
     house->local_position_ = D3DXVECTOR3{ HOUSE_POS_X, HOUSE_POS_Y, 0.f };
 
@@ -74,7 +74,7 @@ void Game::Initialize()
     Sprite *sprite = ((UIRenderer*)stageName->GetComponent("UIRenderer"))
         ->GetSprite();
     sprite->SetAlpha(1.f);
-    sprite->SetUV(0.f / 128.f, 224.f / 512.f, 128.f / 128.f, 64.f / 512.f);
+    sprite->SetUV(0.f / 128.f, 224.f / 1024.f, 128.f / 128.f, 64.f / 1024.f);
     
     field->Initialize();
 
@@ -131,7 +131,8 @@ void Game::GameMain()
     // 人が出現したウイルスでいきなり消されないように発生範囲外を設定する
     BoxCollider* hCol = (BoxCollider*)human->GetComponent("BoxCollider");
     BoxCollider col = human->GetInviolableArea();
-    field->SetOutOfMultiply(col, col);
+    // todo: 要修正
+    //field->SetInviolableArea(col, col);
     field->Update();
 
     GameObject::UpdateObjectAll();
@@ -173,12 +174,12 @@ void Game::SetResultMsg(bool isWin)
     if (isWin) {
         ((UIRenderer*)resultMsg->GetComponent("UIRenderer"))
             ->GetSprite()
-            ->SetUV(0.f / 128.f, 64.f / 512.f, 128.f / 128.f, 64.f / 512.f);
+            ->SetUV(0.f / 128.f, 64.f / 1024.f, 128.f / 128.f, 64.f / 1024.f);
     }
     else {
         ((UIRenderer*)resultMsg->GetComponent("UIRenderer"))
             ->GetSprite()
-            ->SetUV(0.f / 128.f, 128.f / 512.f, 128.f / 128.f, 64.f / 512.f);
+            ->SetUV(0.f / 128.f, 128.f / 1024.f, 128.f / 128.f, 64.f / 1024.f);
     }
 }
 
@@ -205,7 +206,7 @@ void Game::GameResult()
     if (dims.rgbButtons[0] && 0x80)
     {
         resultMsg->SetActive(false);
-        field->DeleteVirus();
+        field->Finalize();
         if (isClear) {
             CommonData::SetCurrentStage(2);
             Scene::SetScene(new Stage2);

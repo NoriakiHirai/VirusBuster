@@ -14,6 +14,8 @@ const float SQUARE_X = DISPLAY_WIDTH / 15.f;
 const float SQUARE_Y = DISPLAY_HEIGHT / 15.f;
 const float VIRUS_OFFSET = 26.5f;
 
+std::vector<BoxCollider> Field::inviolableAreas = {};
+
 bool operator<(const Config& left, const Config& right)
 {
     return left.order < right.order;
@@ -92,22 +94,27 @@ void Field::DeleteVirus()
     }
 }
 
-void Field::SetOutOfMultiply(const BoxCollider& range, const BoxCollider& range2)
+void Field::Finalize()
 {
-    outOfMultiply = range;
-    outOfMultiply2 = range2;
-    for (auto virus : viruses) {
-        virus->SetOutOfMultiply(range, range2);
-    }
+    inviolableAreas.erase(inviolableAreas.begin(), inviolableAreas.end());
+    DeleteVirus();
 }
 
-//void Field::SetOutOfMultiply(const BoxCollider& col)
-//{
-//    outOfMultiply = col;
-//    for (auto virus : viruses) {
-//        virus->SetOutOfMultiply(col);
-//    }
-//}
+void Field::SetInviolableArea(const BoxCollider& range, const BoxCollider& range2)
+{
+    inviolableAreas.push_back(range);
+    inviolableAreas.push_back(range2);
+}
+
+void Field::SetInviolableArea(const BoxCollider& area)
+{
+    inviolableAreas.push_back(area);
+}
+
+const std::vector<BoxCollider>& Field::GetAllInviolableArea()
+{
+    return inviolableAreas;
+}
 
 void Field::MultiplyViruses()
 {
@@ -132,10 +139,10 @@ void Field::MultiplyViruses()
          col = (BoxCollider*)virus->GetComponent("BoxCollider");
          col->center_.x = virus->local_position_.x;
          col->center_.y = virus->local_position_.y;
-         if (col->Check(outOfMultiply) ||
-             col->Check(outOfMultiply2)) {
-             virus->SetActive(false);
-         }
+         //if (col->Check(outOfMultiply) ||
+         //    col->Check(outOfMultiply2)) {
+         //    virus->SetActive(false);
+         //}
          viruses.push_back(virus);
     }
     currentOrder += 1;
@@ -192,10 +199,16 @@ void Field::MultiplyViruses(POINT center)
         col = (BoxCollider*)virus->GetComponent("BoxCollider");
         col->center_.x = virus->local_position_.x;
         col->center_.y = virus->local_position_.y;
-        if (col->Check(outOfMultiply) ||
-            col->Check(outOfMultiply2)) {
-            virus->SetActive(false);
+        for (auto area : inviolableAreas) {
+            if (col->Check(area)) {
+                virus->SetActive(false);
+                break;
+            }
         }
+        //if (col->Check(outOfMultiply) ||
+        //    col->Check(outOfMultiply2)) {
+        //    virus->SetActive(false);
+        //}
         viruses.push_back(virus);
     }
 }

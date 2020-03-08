@@ -25,5 +25,8 @@ public:
 
 	const D3DXVECTOR3 NextPosition();
 	const BoxCollider GetInviolableArea();
+	void GoalCheck(const POINT& goalPos);
+	void Stop();
+
 	static Human* CreateHuman(HumanBehaviour* hb);
 };

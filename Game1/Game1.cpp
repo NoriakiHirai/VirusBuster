@@ -12,9 +12,12 @@
 #include <graphics/UIRenderer.h>
 #include <hid/Input.h>
 #include "scene/Title.h"
+#include "scene/CommonData.h"
 
 // for debug
 #include "scene/Game.h"
+#include "scene/Stage2.h"
+#include "scene/Stage3.h"
 
 #define MAX_LOADSTRING 100
 
@@ -263,9 +266,10 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void AppInitialize()
 {
     Scene::InitializeScene();
-    Scene::SetScene(new Title);
-    //Scene::SetScene(new Game);
-
+    //Scene::SetScene(new Title);
+    Scene::SetScene(new Stage3);
+    CommonData::SetCurrentStage(3);
+    
     SpriteRenderer::Initialize();
     SpriteRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
     UIRenderer::Initialize();

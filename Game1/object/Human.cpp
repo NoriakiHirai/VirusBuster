@@ -3,9 +3,9 @@
 #include <graphics/Sprite.h>
 #include <dynamics/Collider.h>
 #include <common/utility.h>
-#include "Behavior.h"
+#include "Behaviour.h"
 
-float Human::HUMAN_SPEED = 0.5f;
+float Human::HUMAN_SPEED = 5.5f;
 
 Human::Human(const char* textureName, int tex_w, int tex_h)
     : Plane(textureName, tex_w, tex_h)
@@ -91,6 +91,15 @@ const BoxCollider Human::GetInviolableArea()
     col.box_width_.y += 10.f;
 
     return col;
+}
+
+void Human::GoalCheck(const POINT& goalPos)
+{
+
+}
+
+void Human::Stop()
+{
 }
 
 Human* Human::CreateHuman(HumanBehaviour* hb)

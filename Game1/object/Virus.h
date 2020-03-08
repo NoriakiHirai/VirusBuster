@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <graphics/Plane.h>
 #include <utility/InnerTimer.h>
 #include <dynamics/Collider.h>
@@ -7,8 +8,6 @@ class Virus :
     public Plane, public InnerTimer
 {
 private:
-    BoxCollider outOfMultiply;
-    BoxCollider outOfMultiply2;
 
 public:
     Virus(const char* textureName, int tex_w, int tex_h);
@@ -18,6 +17,4 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 	virtual void Finalize() override;
-
-    void SetOutOfMultiply(const BoxCollider& range, const BoxCollider& range2);
 };

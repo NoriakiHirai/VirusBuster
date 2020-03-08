@@ -11,8 +11,9 @@
 #include "../object/Capsule.h"
 #include "../object/Virus.h"
 #include "../Game1.h"
-#include "../object/Behavior.h"
-#include "Title.h"
+#include "../object/Behaviour.h"
+#include "Stage3.h"
+#include "CommonData.h"
 
 const float Stage2::HOUSE_POS_X = 736.f;
 const float Stage2::HOUSE_POS_Y = 64.f;
@@ -20,14 +21,14 @@ const float Stage2::HOUSE_POS_Y = 64.f;
 Stage2::Stage2()
 {
     human = new Human("texture/GameParts.tga", 256, 256);
-    Behavior1* bh1 = new Behavior1(
+    Behaviour1* bh1 = new Behaviour1(
         D3DXVECTOR3{ Human::HUMAN_SPEED, 0.f, 0.f },
         D3DXVECTOR3{ 64.f, 568.f, 0.f }
     );
     human->AddComponent("Behaviour", bh1);
 
     human2 = new Human("texture/GameParts.tga", 256, 256);
-    Behavior2* bh2 = new Behavior2(
+    Behaviour2* bh2 = new Behaviour2(
         D3DXVECTOR3{ 0.f, -Human::HUMAN_SPEED, 0.f },
         D3DXVECTOR3{ 32.f, 536.f, 0.f }
     );
@@ -73,11 +74,16 @@ void Stage2::Initialize()
     house->local_position_ = D3DXVECTOR3{ HOUSE_POS_X, HOUSE_POS_Y, 0.f };
     house->local_scale_ = D3DXVECTOR3{ 0.5f, 0.5f, 1.f };
 
+    HumanBehaviour* hb = dynamic_cast<HumanBehaviour*>(human->GetComponent("Behaviour"));
+    hb->SetVelocity({ Human::HUMAN_SPEED, 0.f, 0.f });
+    hb = dynamic_cast<HumanBehaviour*>(human2->GetComponent("Behaviour"));
+    hb->SetVelocity({ 0.f, -Human::HUMAN_SPEED, 0.f });
+
     // ステージプレートの設定
     Sprite* sprite = ((UIRenderer*)stageName->GetComponent("UIRenderer"))
         ->GetSprite();
     sprite->SetAlpha(1.f);
-    sprite->SetUV(0.f / 128.f, 288.f / 512.f, 128.f / 128.f, 64.f / 512.f);
+    sprite->SetUV(0.f / 128.f, 288.f / 1024.f, 128.f / 128.f, 64.f / 1024.f);
 
     field->Initialize();
 
@@ -90,7 +96,6 @@ void Stage2::Initialize()
 
     phase = 1;
     isClear = false;
-
 }
 
 void Stage2::Update()
@@ -134,7 +139,8 @@ void Stage2::GameMain()
     BoxCollider* hCol2 = (BoxCollider*)human2->GetComponent("BoxCollider");
     BoxCollider col2 = human2->GetInviolableArea();
 
-    field->SetOutOfMultiply(col, col2);
+    // todo:要修正
+    //field->SetInviolableArea(col, col2);
     field->Update();
 
     GameObject::UpdateObjectAll();
@@ -144,36 +150,36 @@ void Stage2::GameMain()
     BoxCollider* vCol;
     BoxCollider* cCol = (BoxCollider*)capsule->GetComponent("BoxCollider");
 
-    for (itr = field->viruses.begin();
-        itr != field->viruses.end();
-        )
-    {
-        if (!(*itr)->IsActive()) {
-            ++itr;
-            continue;
-        }
+    //for (itr = field->viruses.begin();
+    //    itr != field->viruses.end();
+    //    )
+    //{
+    //    if (!(*itr)->IsActive()) {
+    //        ++itr;
+    //        continue;
+    //    }
 
-        vCol = (BoxCollider*)(*itr)->GetComponent("BoxCollider");
-        if (hCol->Check(*vCol)) {
-            human->SetActive(false);
-            SetResultMsg(false);
-            SetPhase(3);
-            break;
-        }
+    //    vCol = (BoxCollider*)(*itr)->GetComponent("BoxCollider");
+    //    if (hCol->Check(*vCol)) {
+    //        human->SetActive(false);
+    //        SetResultMsg(false);
+    //        SetPhase(3);
+    //        break;
+    //    }
 
-        if (hCol2->Check(*vCol)) {
-            human2->SetActive(false);
-            SetResultMsg(false);
-            SetPhase(3);
-            break;
-        }
+    //    if (hCol2->Check(*vCol)) {
+    //        human2->SetActive(false);
+    //        SetResultMsg(false);
+    //        SetPhase(3);
+    //        break;
+    //    }
 
-        if (cCol->Check(*vCol)) {
-            (*itr)->SetActive(false);
-            (*itr)->TimerReset();
-        }
-        ++itr;
-    }
+    //    if (cCol->Check(*vCol)) {
+    //        (*itr)->SetActive(false);
+    //        (*itr)->TimerReset();
+    //    }
+    //    ++itr;
+    //}
 }
 
 void Stage2::SetResultMsg(bool isWin)
@@ -183,12 +189,12 @@ void Stage2::SetResultMsg(bool isWin)
     if (isWin) {
         ((UIRenderer*)resultMsg->GetComponent("UIRenderer"))
             ->GetSprite()
-            ->SetUV(0.f / 128.f, 64.f / 512.f, 128.f / 128.f, 64.f / 512.f);
+            ->SetUV(0.f / 128.f, 64.f / 1024.f, 128.f / 128.f, 64.f / 1024.f);
     }
     else {
         ((UIRenderer*)resultMsg->GetComponent("UIRenderer"))
             ->GetSprite()
-            ->SetUV(0.f / 128.f, 128.f / 512.f, 128.f / 128.f, 64.f / 512.f);
+            ->SetUV(0.f / 128.f, 128.f / 1024.f, 128.f / 128.f, 64.f / 1024.f);
     }
 }
 
@@ -221,13 +227,14 @@ void Stage2::GameResult()
         if (isClear) {
             // ステージ2ならタイトルに戻る
             // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
-            Scene::SetScene(new Title);
-            //Scene::SetScene(new Stage3);
+            //Scene::SetScene(new Title);
+            Scene::SetScene(new Stage3);
+            CommonData::SetCurrentStage(3);
         }
         else {
             SetPhase(1);
             Initialize();
-            field->DeleteVirus();
+            field->Finalize();
         }
     }
 }

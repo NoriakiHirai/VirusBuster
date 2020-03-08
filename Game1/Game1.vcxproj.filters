@@ -120,9 +120,6 @@
     <ClInclude Include="GameLib\utility\InnerTimer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="object\Behavior.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="scene\Stage3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -130,6 +127,15 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="scene\Stage2.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Stage4.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Stage5.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="object\Behaviour.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -218,9 +224,6 @@
     <ClCompile Include="GameLib\utility\InnerTimer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="object\Behavior.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="scene\Stage3.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -228,6 +231,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="scene\CommonData.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="object\Behaviour.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

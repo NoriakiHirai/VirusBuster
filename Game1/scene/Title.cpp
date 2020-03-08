@@ -6,6 +6,7 @@
 #include <hid/Input.h>
 #include "../Game1.h"
 #include "Game.h"
+#include "CommonData.h"
 
 Title::Title()
 {
@@ -38,6 +39,7 @@ void Title::Update()
     if (dims.rgbButtons[0] && 0x80)
     {
         Scene::SetScene(new Game);
+        CommonData::SetCurrentStage(1);
     }
 }
 

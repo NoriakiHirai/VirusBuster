@@ -6,6 +6,7 @@ class Human;
 class Plane;
 class Capsule;
 class Field;
+class BoxCollider;
 
 class Stage3 : public Scene
 {
@@ -31,8 +32,18 @@ private:
     Plane* stageName;
 
     int phase;
-    //bool isClear;
+    bool isClear;
     //int stage;
     float waitTime;
+    float humanCreateInterval;
 
+private:
+    void GameMain();
+    void SetResultMsg(bool iswin);
+    void SetPhase(int);
+    void IsClear();
+    bool GoalCheck(Human*);
+    void GameResult();
+    void DispStageNum();
+    bool CollisionCheckWithHuman(const BoxCollider& virusCol);
 };
