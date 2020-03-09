@@ -5,7 +5,7 @@
 #include <common/utility.h>
 #include "Behaviour.h"
 
-float Human::HUMAN_SPEED = 0.5f;
+float Human::HUMAN_SPEED = 5.5f;
 
 Human::Human(const char* textureName, int tex_w, int tex_h)
     : Plane(textureName, tex_w, tex_h)

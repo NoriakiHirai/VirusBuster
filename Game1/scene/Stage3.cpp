@@ -24,7 +24,7 @@ const float Stage3::HOUSE_POS_Y = 64.f;
 Stage3::Stage3()
 {
     Human* human;
-    // 10人分作成
+    // 4人分作成
     for (auto i = 0; i < 2; ++i) {
         human = new Human("texture/GameParts.tga", 256, 256);
         Behaviour1* bh1 = new Behaviour1(
@@ -188,11 +188,6 @@ void Stage3::GameMain()
     // ウイルスの増殖など
     // 人が出現したウイルスでいきなり消されないように発生範囲外を設定する
     BoxCollider col;
-    //for (auto human : people) {
-    //    if (human->IsActive()) {
-    //        field->SetInviolableArea(human->GetInviolableArea());
-    //    }
-    //}
     field->Update();
 
     GameObject::UpdateObjectAll();
@@ -213,8 +208,8 @@ void Stage3::GameMain()
 
         vCol = (BoxCollider*)(*itr)->GetComponent("BoxCollider");
         if (CollisionCheckWithHuman(*vCol)) {
-            SetResultMsg(false);
-            SetPhase(3);
+            //SetResultMsg(false);
+            //SetPhase(3);
             break;
         }
 
@@ -256,23 +251,8 @@ void Stage3::IsClear()
         }
     }
     if (allFinished) {
-        //SetResultMsg(true);
-        //SetPhase(3);
-        std::vector<Human*>::iterator itr = people.begin();
-        Behaviour1* bh1;
-        Behaviour2* bh2;
-        (*itr)->Initialize();
-        field->SetInviolableArea((*itr)->GetInviolableArea());
-        bh1 = dynamic_cast<Behaviour1*>((*itr)->GetComponent("Behaviour"));
-        bh1->SetVelocity({ Human::HUMAN_SPEED, 0.f, 0.f });
-        ++itr;
-        (*itr)->Initialize();
-        field->SetInviolableArea((*itr)->GetInviolableArea());
-        bh2 = dynamic_cast<Behaviour2*>((*itr)->GetComponent("Behaviour"));
-        bh2->SetVelocity({ 0.f, -Human::HUMAN_SPEED, 0.f });
-        //for (auto human : people) {
-        //    human->Initialize();
-        //}
+        SetResultMsg(true);
+        SetPhase(3);
     }
 }
 
@@ -300,7 +280,6 @@ void Stage3::GameResult()
     {
         resultMsg->SetActive(false);
         if (isClear) {
-            // ステージ2ならタイトルに戻る
             // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
             Scene::SetScene(new Title);
             //Scene::SetScene(new Stage4);
