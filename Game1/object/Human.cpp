@@ -5,7 +5,7 @@
 #include <common/utility.h>
 #include "Behaviour.h"
 
-float Human::HUMAN_SPEED = 5.5f;
+float Human::HUMAN_SPEED = 0.5f;
 
 Human::Human(const char* textureName, int tex_w, int tex_h)
     : Plane(textureName, tex_w, tex_h)
@@ -86,9 +86,9 @@ const BoxCollider Human::GetInviolableArea()
     col.center_.x = pos.x;
     col.center_.y = pos.y;
     col.box_width_ = hCol->box_width_;
-    col.box_width_.x += 10.f;
-    col.box_width_.y += 10.f;
-    col.box_width_.y += 10.f;
+    col.box_width_.x += 20.f;
+    col.box_width_.y += 30.f;
+    //col.box_width_.y += 20.f;
 
     return col;
 }

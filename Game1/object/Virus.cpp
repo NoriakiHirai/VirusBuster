@@ -38,7 +38,7 @@ void Virus::Update()
     //bc->Update(Vector2{ local_position_.x, local_position_.y });
 
     // íœ‚³‚ê‚Ä‚©‚çAˆê’èŽžŠÔŒã‚É•œŠˆ‚·‚é
-    if (!IsActive() && ElapsedTime() >= 10000) {
+    if (!IsActive() && ElapsedTime() >= 15000) {
         BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
         std::vector<BoxCollider> inviolableAreas = Field::GetAllInviolableArea();
         bool canMultiply = true;
@@ -57,7 +57,7 @@ void Virus::Draw()
 {
     if (!IsActive()) return;
     UIRenderer* renderer = (UIRenderer*)GetComponent("UIRenderer");
-    //renderer->Draw(*this);
+    renderer->Draw(*this);
 }
 
 void Virus::Finalize()

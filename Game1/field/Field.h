@@ -42,7 +42,9 @@ public:
     
     void SetInviolableArea(const BoxCollider& range, const BoxCollider& range2);
     void SetInviolableArea(const BoxCollider& area);
+
     static const std::vector<BoxCollider>& GetAllInviolableArea();
+    static void InitAllInviolableArea();
 
 private:
     void DeleteVirus();

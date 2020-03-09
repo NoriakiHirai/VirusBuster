@@ -75,7 +75,6 @@ void Field::Update()
             MultiplyViruses(center);
         }
         currentOrder += 1;
-        //MultiplyViruses();
         elapsedTime = 0;
         startTime = timeGetTime();
     }
@@ -114,6 +113,11 @@ void Field::SetInviolableArea(const BoxCollider& area)
 const std::vector<BoxCollider>& Field::GetAllInviolableArea()
 {
     return inviolableAreas;
+}
+
+void Field::InitAllInviolableArea()
+{
+    inviolableAreas.erase(inviolableAreas.begin(), inviolableAreas.end());
 }
 
 void Field::MultiplyViruses()

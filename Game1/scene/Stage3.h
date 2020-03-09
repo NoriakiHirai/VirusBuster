@@ -30,6 +30,7 @@ private:
     Field* field;
     Plane* resultMsg;
     Plane* stageName;
+    BoxCollider* startArea;
 
     int phase;
     bool isClear;

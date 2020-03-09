@@ -25,7 +25,7 @@ Stage3::Stage3()
 {
     Human* human;
     // 10人分作成
-    for (auto i = 0; i < 1; ++i) {
+    for (auto i = 0; i < 2; ++i) {
         human = new Human("texture/GameParts.tga", 256, 256);
         Behaviour1* bh1 = new Behaviour1(
             D3DXVECTOR3{ Human::HUMAN_SPEED, 0.f, 0.f },
@@ -44,6 +44,10 @@ Stage3::Stage3()
         human->SetActive(false);
         people.push_back(human);
     }
+
+    startArea = new BoxCollider();
+    startArea->center_ = Vector2{ 50.f, 550.f };
+    startArea->box_width_ = Vector2{ 50.f, 50.f };
 
     house = new Plane("texture/GameParts.tga", 256, 256);
     ((UIRenderer*)house->GetComponent("UIRenderer"))
@@ -166,10 +170,18 @@ void Stage3::GameMain()
         for (auto human : people) {
             if (!human->IsActive()) {
                 human->SetActive(true);
-                field->SetInviolableArea(human->GetInviolableArea());
                 humanCreateInterval = HUMAN_CREATE_INTERVAL_MAX;
                 break;
             }
+        }
+    }
+
+    // ウイルスの非発生領域を更新する
+    Field::InitAllInviolableArea();
+    field->SetInviolableArea(*startArea);
+    for (auto human : people) {
+        if (human->IsActive()) {
+            field->SetInviolableArea(human->GetInviolableArea());
         }
     }
 
@@ -190,7 +202,6 @@ void Stage3::GameMain()
     BoxCollider* vCol;
     BoxCollider* cCol = (BoxCollider*)capsule->GetComponent("BoxCollider");
 
-    return;
     for (itr = field->viruses.begin();
         itr != field->viruses.end();
         )
@@ -206,19 +217,6 @@ void Stage3::GameMain()
             SetPhase(3);
             break;
         }
-        //if (hCol->Check(*vCol)) {
-        //    human->SetActive(false);
-        //    SetResultMsg(false);
-        //    SetPhase(3);
-        //    break;
-        //}
-
-        //if (hCol2->Check(*vCol)) {
-        //    human2->SetActive(false);
-        //    SetResultMsg(false);
-        //    SetPhase(3);
-        //    break;
-        //}
 
         if (cCol->Check(*vCol)) {
             (*itr)->SetActive(false);
@@ -330,6 +328,7 @@ bool Stage3::CollisionCheckWithHuman(const BoxCollider& virusCol)
 {
     BoxCollider* hCol;
     for (auto human : people) {
+        if (!human->IsActive()) continue;
          hCol = (BoxCollider*)human->GetComponent("BoxCollider");
          if (hCol->Check(virusCol)) {
              //human->SetActive(false);
