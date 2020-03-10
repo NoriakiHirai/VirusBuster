@@ -232,6 +232,7 @@
     <ClCompile Include="object\Human.cpp" />
     <ClCompile Include="scene\Stage2.cpp" />
     <ClCompile Include="scene\Stage3.cpp" />
+    <ClCompile Include="scene\Stage4.cpp" />
     <ClCompile Include="scene\Title.cpp" />
     <ClCompile Include="object\Virus.cpp" />
   </ItemGroup>

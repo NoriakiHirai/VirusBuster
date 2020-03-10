@@ -30,6 +30,8 @@ private:
     int currentOrder;
     int start, end;
     int frameCount;
+    int virusRivivalInterval;
+
     static std::vector<BoxCollider> inviolableAreas;
 
 public:
@@ -42,6 +44,7 @@ public:
     
     void SetInviolableArea(const BoxCollider& range, const BoxCollider& range2);
     void SetInviolableArea(const BoxCollider& area);
+    void SetVirusRivivalInterval(const int);
 
     static const std::vector<BoxCollider>& GetAllInviolableArea();
     static void InitAllInviolableArea();

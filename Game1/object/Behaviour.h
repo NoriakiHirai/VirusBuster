@@ -48,3 +48,21 @@ public:
     virtual void Stop();
 };
 
+class Behaviour3 :
+    public HumanBehaviour
+{
+private:
+    D3DXVECTOR3 goalPosition;
+    float slope;    // ïœâªÇÃäÑçá
+
+protected:
+
+public:
+    Behaviour3(D3DXVECTOR3 vel, D3DXVECTOR3 initPos, D3DXVECTOR3 goalPos);
+    ~Behaviour3() {}
+
+    virtual void Start() override;
+    virtual void Update() override;
+
+    virtual void Stop();
+};

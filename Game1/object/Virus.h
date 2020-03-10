@@ -8,6 +8,7 @@ class Virus :
     public Plane, public InnerTimer
 {
 private:
+	int rivivalInterval;
 
 public:
     Virus(const char* textureName, int tex_w, int tex_h);
@@ -17,4 +18,6 @@ public:
 	virtual void Update() override;
 	virtual void Draw() override;
 	virtual void Finalize() override;
+
+	void SetRivivalInterval(int);
 };

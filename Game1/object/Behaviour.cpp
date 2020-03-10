@@ -3,6 +3,16 @@
 #include "../scene/Game.h"
 #include "Human.h"
 
+HumanBehaviour::HumanBehaviour(D3DXVECTOR3 vel, D3DXVECTOR3 pos)
+    : velocity(vel), initPosition(pos)
+{
+}
+
+void HumanBehaviour::SetVelocity(D3DXVECTOR3 vel)
+{
+    velocity = vel;
+}
+
 Behaviour1::Behaviour1(D3DXVECTOR3 vel, D3DXVECTOR3 pos)
     : HumanBehaviour(vel, pos)
 {
@@ -61,12 +71,52 @@ void Behaviour2::Stop()
     SetStarted(false);
 }
 
-HumanBehaviour::HumanBehaviour(D3DXVECTOR3 vel, D3DXVECTOR3 pos)
-    : velocity(vel), initPosition(pos)
+Behaviour3::Behaviour3(D3DXVECTOR3 vel, D3DXVECTOR3 initPos, D3DXVECTOR3 goalPos)
+    : HumanBehaviour(vel, initPos)
 {
+    goalPosition = goalPos;
+    float diffX = goalPos.x - initPos.x;
+    float diffY = goalPos.y - initPos.y;
+    if (diffX == 0.f) {
+        slope = 0.f;
+    }
+    else {
+        slope = diffY / diffX;
+    }
 }
 
-void HumanBehaviour::SetVelocity(D3DXVECTOR3 vel)
+void Behaviour3::Start()
 {
-    velocity = vel;
+    gameObject().local_position_ = initPosition;
+    gameObject().SetActive(true);
+    SetStarted(true);
+}
+
+void Behaviour3::Update()
+{
+    if (!IsStarted()) { Start(); }
+    // sinカーブを描いてゴールに向かっていく
+    D3DXVECTOR3 currentPos = gameObject().local_position_;
+    
+    // 一定距離まで近づいたら一直線にゴールに向かう
+    D3DXVECTOR3 toGoal = goalPosition - currentPos;
+    float len = D3DXVec3Length(&(toGoal));
+    if (len <= 100.f) {
+        D3DXVECTOR3 vec;
+        D3DXVec3Normalize(&vec, &toGoal);
+        D3DXVECTOR3 velocity = vec * Human::HUMAN_SPEED;
+        gameObject().local_position_ += velocity;
+    }
+    else {
+        float nextX = currentPos.x + Human::HUMAN_SPEED;
+        float nextY = (sinf(nextX / 5.f) * 100.f) + (slope * nextX) + initPosition.y;
+        D3DXVECTOR3 nextPos{ nextX, nextY, 0.f };
+        gameObject().local_position_ = nextPos;
+    }
+}
+
+void Behaviour3::Stop()
+{
+    gameObject().SetActive(false);
+    SetStarted(false);
 }

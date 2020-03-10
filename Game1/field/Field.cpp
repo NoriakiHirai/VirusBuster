@@ -27,7 +27,7 @@ bool operator>(const Config& left, const Config& right)
 }
 
 Field::Field(const char* configFile)
-    : elapsedTime(0), currentOrder(1)
+    : elapsedTime(0), currentOrder(1), virusRivivalInterval(15000)
 {
     ReadConfigFile(configFile, &virusConfig);
     // î≠ê∂èáÇ…É\Å[Ég
@@ -108,6 +108,11 @@ void Field::SetInviolableArea(const BoxCollider& range, const BoxCollider& range
 void Field::SetInviolableArea(const BoxCollider& area)
 {
     inviolableAreas.push_back(area);
+}
+
+void Field::SetVirusRivivalInterval(const int interval)
+{
+    virusRivivalInterval = interval;
 }
 
 const std::vector<BoxCollider>& Field::GetAllInviolableArea()
@@ -209,10 +214,7 @@ void Field::MultiplyViruses(POINT center)
                 break;
             }
         }
-        //if (col->Check(outOfMultiply) ||
-        //    col->Check(outOfMultiply2)) {
-        //    virus->SetActive(false);
-        //}
+        virus->SetRivivalInterval(virusRivivalInterval);
         viruses.push_back(virus);
     }
 }
