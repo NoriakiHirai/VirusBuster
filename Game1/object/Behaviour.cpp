@@ -13,6 +13,11 @@ void HumanBehaviour::SetVelocity(D3DXVECTOR3 vel)
     velocity = vel;
 }
 
+void HumanBehaviour::SetSpeed(float sp)
+{
+    speed = sp;
+}
+
 Behaviour1::Behaviour1(D3DXVECTOR3 vel, D3DXVECTOR3 pos)
     : HumanBehaviour(vel, pos)
 {
@@ -21,6 +26,7 @@ Behaviour1::Behaviour1(D3DXVECTOR3 vel, D3DXVECTOR3 pos)
 void Behaviour1::Start()
 {
     gameObject().local_position_ = initPosition;
+    //velocity = D3DXVECTOR3{ speed, 0.f, 0.f };
     gameObject().SetActive(true);
     SetStarted(true);
 }
@@ -104,11 +110,11 @@ void Behaviour3::Update()
     if (len <= 100.f) {
         D3DXVECTOR3 vec;
         D3DXVec3Normalize(&vec, &toGoal);
-        D3DXVECTOR3 velocity = vec * Human::HUMAN_SPEED;
+        D3DXVECTOR3 velocity = vec * speed;
         gameObject().local_position_ += velocity;
     }
     else {
-        float nextX = currentPos.x + Human::HUMAN_SPEED;
+        float nextX = currentPos.x + speed;
         float nextY = (sinf(nextX / 5.f) * 100.f) + (slope * nextX) + initPosition.y;
         D3DXVECTOR3 nextPos{ nextX, nextY, 0.f };
         gameObject().local_position_ = nextPos;
@@ -116,6 +122,56 @@ void Behaviour3::Update()
 }
 
 void Behaviour3::Stop()
+{
+    gameObject().SetActive(false);
+    SetStarted(false);
+}
+
+Behaviour4::Behaviour4(D3DXVECTOR3 vel, D3DXVECTOR3 initPos, D3DXVECTOR3 goalPos)
+    : HumanBehaviour(vel, initPos)
+{
+    goalPosition = goalPos;
+    float diffX = goalPos.x - initPos.x;
+    float diffY = goalPos.y - initPos.y;
+    if (diffX == 0.f) {
+        slope = 0.f;
+    }
+    else {
+        slope = diffY / diffX;
+    }
+}
+
+void Behaviour4::Start()
+{
+    gameObject().local_position_ = initPosition;
+    gameObject().SetActive(true);
+    SetStarted(true);
+}
+
+void Behaviour4::Update()
+{
+    if (!IsStarted()) { Start(); }
+    // sinƒJ[ƒu‚ð•`‚¢‚ÄƒS[ƒ‹‚ÉŒü‚©‚Á‚Ä‚¢‚­
+    D3DXVECTOR3 currentPos = gameObject().local_position_;
+
+    // ˆê’è‹——£‚Ü‚Å‹ß‚Ã‚¢‚½‚çˆê’¼ü‚ÉƒS[ƒ‹‚ÉŒü‚©‚¤
+    D3DXVECTOR3 toGoal = goalPosition - currentPos;
+    float len = D3DXVec3Length(&(toGoal));
+    if (len <= 100.f) {
+        D3DXVECTOR3 vec;
+        D3DXVec3Normalize(&vec, &toGoal);
+        D3DXVECTOR3 velocity = vec * speed;
+        gameObject().local_position_ += velocity;
+    }
+    else {
+        float nextX = currentPos.x + speed;
+        float nextY = (cosf(nextX / 5.f) * 100.f) + (slope * nextX) + initPosition.y;
+        D3DXVECTOR3 nextPos{ nextX, nextY, 0.f };
+        gameObject().local_position_ = nextPos;
+    }
+}
+
+void Behaviour4::Stop()
 {
     gameObject().SetActive(false);
     SetStarted(false);

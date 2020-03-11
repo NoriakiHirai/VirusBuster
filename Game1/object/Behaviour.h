@@ -8,7 +8,7 @@ private:
 protected:
     D3DXVECTOR3 velocity;
     D3DXVECTOR3 initPosition;
-
+    float speed;
 
 public:
     HumanBehaviour() {}
@@ -16,6 +16,7 @@ public:
     virtual ~HumanBehaviour() {}
 
     void SetVelocity(D3DXVECTOR3);
+    void SetSpeed(float);
 };
 
 class Behaviour1 :
@@ -60,6 +61,25 @@ protected:
 public:
     Behaviour3(D3DXVECTOR3 vel, D3DXVECTOR3 initPos, D3DXVECTOR3 goalPos);
     ~Behaviour3() {}
+
+    virtual void Start() override;
+    virtual void Update() override;
+
+    virtual void Stop();
+};
+
+class Behaviour4 :
+    public HumanBehaviour
+{
+private:
+    D3DXVECTOR3 goalPosition;
+    float slope;    // ïœâªÇÃäÑçá
+
+protected:
+
+public:
+    Behaviour4(D3DXVECTOR3 vel, D3DXVECTOR3 initPos, D3DXVECTOR3 goalPos);
+    ~Behaviour4() {}
 
     virtual void Start() override;
     virtual void Update() override;

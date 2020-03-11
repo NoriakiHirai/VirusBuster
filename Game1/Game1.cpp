@@ -19,6 +19,7 @@
 #include "scene/Stage2.h"
 #include "scene/Stage3.h"
 #include "scene/Stage4.h"
+#include "scene/Stage5.h"
 
 #define MAX_LOADSTRING 100
 
@@ -160,13 +161,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
            NULL);
        return 1;
    }
-   //if (!Input::Initialize(hWnd)) {
-   //    MessageBox(NULL,
-   //        _T("インプットデバイスの初期化に失敗しました。"),
-   //        _T("Error"),
-   //        NULL);
-   //    return 1;
-   //}
    return TRUE;
 }
 
@@ -267,9 +261,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void AppInitialize()
 {
     Scene::InitializeScene();
-    //Scene::SetScene(new Title);
-    Scene::SetScene(new Stage4);
-    CommonData::SetCurrentStage(4);
+    Scene::SetScene(new Title);
+    //Scene::SetScene(new Stage2);
+    CommonData::SetCurrentStage(1);
     
     SpriteRenderer::Initialize();
     SpriteRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);

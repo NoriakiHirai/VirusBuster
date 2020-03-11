@@ -12,7 +12,7 @@
 #include "../object/Virus.h"
 #include "../Game1.h"
 #include "../object/Behaviour.h"
-#include "Stage4.h"
+#include "Stage5.h"
 
 // for debug
 #include "Title.h"
@@ -29,6 +29,7 @@ Stage4::Stage4()
         D3DXVECTOR3{ 50.f, 550.f, 0.f },
         D3DXVECTOR3{ HOUSE_POS_X, HOUSE_POS_Y + 32.f, 0.f } // ゴールの下端とプレイヤーの下端を合わせる
     );
+    bh->SetSpeed(5.25f);
     human->AddComponent("Behaviour", bh);
 
     startArea = new BoxCollider();
@@ -42,7 +43,7 @@ Stage4::Stage4()
     house->SetLayer(Layer::kStage);
 
     field = new Field("data/VirusConfig.csv");
-    field->SetVirusRivivalInterval(10000);
+    field->SetVirusRivivalInterval(15000);
 
     capsule = new Capsule("texture/GameParts.tga", 256, 256);
     resultMsg = new Plane("texture/sign.tga", 128, 512);
@@ -228,8 +229,8 @@ void Stage4::GameResult()
         resultMsg->SetActive(false);
         if (isClear) {
             // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
-            Scene::SetScene(new Title);
-            //Scene::SetScene(new Stage4);
+            //Scene::SetScene(new Title);
+            Scene::SetScene(new Stage5);
         }
         else {
             SetPhase(1);
@@ -255,8 +256,8 @@ bool Stage4::CollisionCheckWithHuman(const BoxCollider& virusCol)
     BoxCollider* hCol;
     hCol = (BoxCollider*)human->GetComponent("BoxCollider");
     if (hCol->Check(virusCol)) {
-        human->SetActive(false);
-        return true;
+        //human->SetActive(false);
+        //return true;
     }
     return false;
 }

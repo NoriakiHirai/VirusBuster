@@ -42,6 +42,7 @@ Stage2::Stage2()
     house->local_scale_ = D3DXVECTOR3{ 0.5f, 0.5f, 1.f };
 
     field = new Field("data/VirusConfig.csv");
+    field->SetVirusRivivalInterval(5000);
 
     capsule = new Capsule("texture/GameParts.tga", 256, 256);
     resultMsg = new Plane("texture/sign.tga", 128, 512);
@@ -83,7 +84,7 @@ void Stage2::Initialize()
     Sprite* sprite = ((UIRenderer*)stageName->GetComponent("UIRenderer"))
         ->GetSprite();
     sprite->SetAlpha(1.f);
-    sprite->SetUV(0.f / 128.f, 288.f / 1024.f, 128.f / 128.f, 64.f / 1024.f);
+    sprite->SetUV(0.f / 128.f, 287.f / 1024.f, 128.f / 128.f, 62.f / 1024.f);
 
     field->Initialize();
 
@@ -133,53 +134,49 @@ void Stage2::GameMain()
     if (!human && !human2) return;
     // ウイルスの増殖など
     // 人が出現したウイルスでいきなり消されないように発生範囲外を設定する
-    BoxCollider* hCol = (BoxCollider*)human->GetComponent("BoxCollider");
-    BoxCollider col = human->GetInviolableArea();
-
-    BoxCollider* hCol2 = (BoxCollider*)human2->GetComponent("BoxCollider");
-    BoxCollider col2 = human2->GetInviolableArea();
-
-    // todo:要修正
-    //field->SetInviolableArea(col, col2);
+    Field::InitAllInviolableArea();
+    field->SetInviolableArea(human->GetInviolableArea());
+    field->SetInviolableArea(human2->GetInviolableArea());
     field->Update();
 
     GameObject::UpdateObjectAll();
-
+    
     // 衝突検知
     std::vector<Virus*>::iterator itr;
     BoxCollider* vCol;
     BoxCollider* cCol = (BoxCollider*)capsule->GetComponent("BoxCollider");
+    BoxCollider* hCol = (BoxCollider*)human->GetComponent("BoxCollider");
+    BoxCollider* hCol2 = (BoxCollider*)human2->GetComponent("BoxCollider");
+    for (itr = field->viruses.begin();
+        itr != field->viruses.end();
+        )
+    {
+        if (!(*itr)->IsActive()) {
+            ++itr;
+            continue;
+        }
 
-    //for (itr = field->viruses.begin();
-    //    itr != field->viruses.end();
-    //    )
-    //{
-    //    if (!(*itr)->IsActive()) {
-    //        ++itr;
-    //        continue;
-    //    }
+        vCol = (BoxCollider*)(*itr)->GetComponent("BoxCollider");
+        if (hCol->Check(*vCol)) {
+            human->SetActive(false);
+            SetResultMsg(false);
+            SetPhase(3);
+            break;
+        }
 
-    //    vCol = (BoxCollider*)(*itr)->GetComponent("BoxCollider");
-    //    if (hCol->Check(*vCol)) {
-    //        human->SetActive(false);
-    //        SetResultMsg(false);
-    //        SetPhase(3);
-    //        break;
-    //    }
+        if (hCol2->Check(*vCol)) {
+            human2->SetActive(false);
+            SetResultMsg(false);
+            SetPhase(3);
+            break;
+        }
 
-    //    if (hCol2->Check(*vCol)) {
-    //        human2->SetActive(false);
-    //        SetResultMsg(false);
-    //        SetPhase(3);
-    //        break;
-    //    }
-
-    //    if (cCol->Check(*vCol)) {
-    //        (*itr)->SetActive(false);
-    //        (*itr)->TimerReset();
-    //    }
-    //    ++itr;
-    //}
+        if (cCol->Check(*vCol)) {
+            (*itr)->SetActive(false);
+            (*itr)->TimerReset();
+        }
+        ++itr;
+    }
 }
 
 void Stage2::SetResultMsg(bool isWin)
