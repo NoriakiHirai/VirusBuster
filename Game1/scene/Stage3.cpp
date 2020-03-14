@@ -56,6 +56,7 @@ Stage3::Stage3()
     house->SetLayer(Layer::kStage);
 
     field = new Field("data/VirusConfig.csv");
+    field->SetVirusRivivalInterval(10000);
 
     capsule = new Capsule("texture/GameParts.tga", 256, 256);
     resultMsg = new Plane("texture/sign.tga", 128, 512);
@@ -208,8 +209,8 @@ void Stage3::GameMain()
 
         vCol = (BoxCollider*)(*itr)->GetComponent("BoxCollider");
         if (CollisionCheckWithHuman(*vCol)) {
-            //SetResultMsg(false);
-            //SetPhase(3);
+            SetResultMsg(false);
+            SetPhase(3);
             break;
         }
 
@@ -281,8 +282,8 @@ void Stage3::GameResult()
         resultMsg->SetActive(false);
         if (isClear) {
             // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
-            Scene::SetScene(new Title);
-            //Scene::SetScene(new Stage4);
+            //Scene::SetScene(new Title);
+            Scene::SetScene(new Stage4);
         }
         else {
             SetPhase(1);
@@ -310,7 +311,7 @@ bool Stage3::CollisionCheckWithHuman(const BoxCollider& virusCol)
         if (!human->IsActive()) continue;
          hCol = (BoxCollider*)human->GetComponent("BoxCollider");
          if (hCol->Check(virusCol)) {
-             //human->SetActive(false);
+             human->SetActive(false);
              return true;
          }
     }
