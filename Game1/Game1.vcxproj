@@ -190,6 +190,7 @@
     <ClInclude Include="GameLib\scene\Scene.h" />
     <ClInclude Include="GameLib\graphics\Plane.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="scene\Clear.h" />
     <ClInclude Include="scene\CommonData.h" />
     <ClInclude Include="scene\Game.h" />
     <ClInclude Include="object\Human.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="GameLib\light\Light.cpp" />
     <ClCompile Include="GameLib\scene\Scene.cpp" />
     <ClCompile Include="GameLib\graphics\Plane.cpp" />
+    <ClCompile Include="scene\Clear.cpp" />
     <ClCompile Include="scene\CommonData.cpp" />
     <ClCompile Include="scene\Game.cpp" />
     <ClCompile Include="object\Human.cpp" />

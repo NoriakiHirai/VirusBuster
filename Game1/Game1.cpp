@@ -20,6 +20,7 @@
 #include "scene/Stage3.h"
 #include "scene/Stage4.h"
 #include "scene/Stage5.h"
+#include "scene/Clear.h"
 
 #define MAX_LOADSTRING 100
 
@@ -262,8 +263,8 @@ void AppInitialize()
 {
     Scene::InitializeScene();
     //Scene::SetScene(new Title);
-    Scene::SetScene(new Stage5);
-    CommonData::SetCurrentStage(5);
+    Scene::SetScene(new Clear);
+    CommonData::SetCurrentStage(1);
     
     SpriteRenderer::Initialize();
     SpriteRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);

@@ -138,6 +138,9 @@
     <ClInclude Include="object\Behaviour.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="scene\Clear.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game1.cpp">
@@ -240,6 +243,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="scene\Stage5.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Clear.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
