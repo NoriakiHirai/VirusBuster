@@ -29,7 +29,7 @@ Stage4::Stage4()
         D3DXVECTOR3{ 50.f, 550.f, 0.f },
         D3DXVECTOR3{ HOUSE_POS_X, HOUSE_POS_Y + 32.f, 0.f } // ゴールの下端とプレイヤーの下端を合わせる
     );
-    bh->SetSpeed(5.25f);
+    bh->SetSpeed(0.25f);
     human->AddComponent("Behaviour", bh);
 
     startArea = new BoxCollider();
@@ -256,8 +256,8 @@ bool Stage4::CollisionCheckWithHuman(const BoxCollider& virusCol)
     BoxCollider* hCol;
     hCol = (BoxCollider*)human->GetComponent("BoxCollider");
     if (hCol->Check(virusCol)) {
-        //human->SetActive(false);
-        //return true;
+        human->SetActive(false);
+        return true;
     }
     return false;
 }

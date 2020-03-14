@@ -262,8 +262,8 @@ void AppInitialize()
 {
     Scene::InitializeScene();
     //Scene::SetScene(new Title);
-    Scene::SetScene(new Stage3);
-    CommonData::SetCurrentStage(3);
+    Scene::SetScene(new Stage5);
+    CommonData::SetCurrentStage(5);
     
     SpriteRenderer::Initialize();
     SpriteRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
