@@ -64,6 +64,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
     AppInitialize();
 
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAME1));
+
     // メインのメッセージループ:
     MSG msg = {};
 
@@ -79,6 +81,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             AppProcess();
         }
     }
+
     Finalize();
 
     return (int) msg.wParam;
@@ -226,6 +229,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case VK_ESCAPE:
             //終了メッセージを発生させる
             PostMessage(hWnd, WM_CLOSE, 0, 0);
+            //PostQuitMessage(0);
+            break;
+        case VK_RETURN:
+            //PostMessage(hWnd, WM_ACTIVATE, 0, 0);
             break;
         default:
             break;
@@ -262,8 +269,8 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 void AppInitialize()
 {
     Scene::InitializeScene();
-    //Scene::SetScene(new Title);
-    Scene::SetScene(new Clear);
+    Scene::SetScene(new Title);
+    //Scene::SetScene(new Clear);
     CommonData::SetCurrentStage(1);
     
     SpriteRenderer::Initialize();
@@ -286,6 +293,8 @@ void Update()
 
 void Draw() {
     using Hirai::DirectX;
+    using Hirai::Input;
+    Input::Update();
     DirectX::SetPresentDevice();
     Scene::DrawScene();
 }

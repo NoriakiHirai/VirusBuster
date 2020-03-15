@@ -12,7 +12,7 @@
 #include "../object/Virus.h"
 #include "../Game1.h"
 #include "../object/Behaviour.h"
-#include "Title.h"
+#include "Clear.h"
 
 static const float HUMAN_CREATE_INTERVAL_MAX = 5.f;
 const float Stage5::HOUSE_POS_X = 736.f;
@@ -235,13 +235,12 @@ void Stage5::GameResult()
 {
     // クリックすると次のステージへ
     using Hirai::Input;
-    DIMOUSESTATE2& dims = Input::GetMouseInput();
-    if (dims.rgbButtons[0] && 0x80)
+    if (Input::GetMouseLeftButtonTrigger())
     {
         resultMsg->SetActive(false);
         if (isClear) {
             // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
-            Scene::SetScene(new Title);
+            Scene::SetScene(new Clear);
         }
         else {
             SetPhase(1);

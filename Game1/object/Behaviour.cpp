@@ -176,3 +176,27 @@ void Behaviour4::Stop()
     gameObject().SetActive(false);
     SetStarted(false);
 }
+
+Behaviour5::Behaviour5(D3DXVECTOR3 vel, D3DXVECTOR3 initPos)
+    : HumanBehaviour(vel, initPos)
+{
+}
+
+void Behaviour5::Start()
+{
+    gameObject().local_position_ = initPosition;
+    gameObject().SetActive(true);
+    SetStarted(true);
+}
+
+void Behaviour5::Update()
+{
+    if (!IsStarted()) { Start(); }
+    if (gameObject().local_position_.y >= 568.f) {
+        velocity.y = -5.f;
+    }
+    else {
+        velocity.y += 0.2f;
+    }
+    gameObject().local_position_ += velocity;
+}

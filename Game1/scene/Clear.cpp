@@ -7,6 +7,8 @@
 #include "../Game1.h"
 #include "Title.h"
 #include "CommonData.h"
+#include "../object/Human.h"
+#include "../object/Behaviour.h"
 
 Clear::Clear()
 {
@@ -19,6 +21,8 @@ Clear::Clear()
 Clear::~Clear()
 {
     clear->Destroy(clear);
+    human->Destroy(human);
+    human2->Destroy(human2);
 }
 
 void Clear::Initialize()
@@ -29,17 +33,34 @@ void Clear::Initialize()
     0.f
     };
     clear->local_scale_ = D3DXVECTOR3{ 2.f, 1.f, 1.f };
+
+    Behaviour5* bh5;
+    human = new Human("texture/GameParts.tga", 256, 256);
+    bh5 = new Behaviour5(
+        D3DXVECTOR3{ 0.f, -5.f, 0.f },
+        D3DXVECTOR3{ 300.f, 568.f, 0.f }
+    );
+    human->AddComponent("Behaviour", bh5);
+
+    human2 = new Human("texture/GameParts.tga", 256, 256);
+    bh5 = new Behaviour5(
+        D3DXVECTOR3{ 0.f, -5.f, 0.f },
+        D3DXVECTOR3{ 500.f, 568.f, 0.f }
+    );
+    human2->AddComponent("Behaviour", bh5);
+   
+    GameObject::InitObjectAll();
 }
 
 void Clear::Update()
 {
     using Hirai::Input;
-    DIMOUSESTATE2& dims = Input::GetMouseInput();
-    if (dims.rgbButtons[0] && 0x80)
+    if (Input::GetMouseLeftButtonTrigger())
     {
         Scene::SetScene(new Title);
         CommonData::SetCurrentStage(1);
     }
+    GameObject::UpdateObjectAll();
 }
 
 void Clear::Draw()

@@ -217,8 +217,7 @@ void Stage2::GameResult()
 {
     // クリックすると次のステージへ
     using Hirai::Input;
-    DIMOUSESTATE2& dims = Input::GetMouseInput();
-    if (dims.rgbButtons[0] && 0x80)
+    if (Input::GetMouseLeftButtonTrigger())
     {
         resultMsg->SetActive(false);
         if (isClear) {

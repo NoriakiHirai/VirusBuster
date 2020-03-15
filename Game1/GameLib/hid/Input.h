@@ -38,12 +38,16 @@ namespace Hirai
 
 		// É}ÉEÉX
 		static DIMOUSESTATE2& GetMouseInput();
+		static bool GetMouseLeftButtonTrigger();
 
 		static bool Initialize(HWND hwnd);
 		static bool InitializeForMouse(HWND hwnd);
+		static void Update();
 		static void Finalize();
 
 	private:
+		static const int WAIT_COUNT_MAX = 20;
+
 		static BYTE* GetKey();
 
 		static LPDIRECTINPUT8 d_input_;
@@ -56,6 +60,7 @@ namespace Hirai
 		static BYTE* pre_diks_;
 		static KeyName prev_key_;
 		static bool long_push_;
+		static int long_push_count_;
 		static bool prev_push_;
 		static std::map<int, bool> prev_key_map_;
 	};

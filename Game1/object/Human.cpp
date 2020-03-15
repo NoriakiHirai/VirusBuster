@@ -39,7 +39,7 @@ Human::~Human()
 void Human::Initialize()
 {
     Component* behaviour = GetComponent("Behaviour");
-    behaviour->Start();
+    if (behaviour) behaviour->Start();
     local_scale_ = D3DXVECTOR3{ 0.2f, 0.2f, 1.f };
 
     BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");
@@ -55,7 +55,7 @@ void Human::Update()
     if (!IsActive()) return;
 
     Component* behaviour = GetComponent("Behaviour");
-    behaviour->Update();
+    if (behaviour) behaviour->Update();
     //local_position_ += velocity;
     // collider‚ÌÀ•W‚ğXV
     BoxCollider* bc = (BoxCollider*)GetComponent("BoxCollider");

@@ -13,6 +13,7 @@ namespace Hirai
 	DIMOUSESTATE2 Input::dims = { 0 };
 	BYTE* Input::pre_diks_ = nullptr;
 	bool Input::long_push_ = false;
+	int Input::long_push_count_ = WAIT_COUNT_MAX;	// 20F
 	bool Input::prev_push_ = false;
 	KeyName Input::prev_key_ = KeyName::kButtonNone;
 	std::map<int, bool> Input::prev_key_map_ = {
@@ -45,6 +46,18 @@ namespace Hirai
 			mouse_->Acquire();
 		}
 		return dims;
+	}
+
+	bool Input::GetMouseLeftButtonTrigger()
+	{
+		DIMOUSESTATE2& dims = GetMouseInput();
+		if ((dims.rgbButtons[0] && 0x80) && 
+			long_push_count_ <= 0)
+		{
+			long_push_count_ = WAIT_COUNT_MAX;
+			return true;
+		}
+		return false;
 	}
 
 	bool Input::Initialize(HWND hwnd)
@@ -144,6 +157,12 @@ namespace Hirai
 		}
 
 		return true;
+	}
+
+	void Input::Update()
+	{
+		if (long_push_count_ > 0)
+			--long_push_count_;
 	}
 
 	void Input::Finalize()

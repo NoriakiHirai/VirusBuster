@@ -7,6 +7,8 @@
 #include "../Game1.h"
 #include "Game.h"
 #include "CommonData.h"
+//#include "../object/Human.h"
+//#include "../object/Behaviour.h"
 
 Title::Title()
 {
@@ -14,12 +16,28 @@ Title::Title()
     ((UIRenderer*)title->GetComponent("UIRenderer"))
         ->GetSprite()
         ->SetUV(0.f / 256.f, 0.f / 256.f, 256.f / 256.f, 40.f / 256.f);
+
+    //human = new Human("texture/GameParts.tga", 256, 256);
+    //Behaviour1* bh1 = new Behaviour1(
+    //    D3DXVECTOR3{ Human::HUMAN_SPEED, 0.f, 0.f },
+    //    D3DXVECTOR3{ 64.f, 568.f, 0.f }
+    //);
+    //human->AddComponent("Behaviour", bh1);
+
+    //house = new Plane("texture/GameParts.tga", 256, 256);
+    //((UIRenderer*)house->GetComponent("UIRenderer"))
+    //    ->GetSprite()
+    //    ->SetUV(0.f / 256.f, 0.f / 256.f, 128.f / 256.f, 128.f / 256.f);
+    //house->SetLayer(Layer::kStage);
+    //house->local_scale_ = D3DXVECTOR3{ 0.5f, 0.5f, 1.f };
 }
 
 Title::~Title()
 {
     //SAFE_DELETE(title);
     title->Destroy(title);
+    //human->Destroy(human);
+    //house->Destroy(house);
 }
 
 void Title::Initialize()
@@ -35,8 +53,7 @@ void Title::Initialize()
 void Title::Update()
 {
     using Hirai::Input;
-    DIMOUSESTATE2& dims = Input::GetMouseInput();
-    if (dims.rgbButtons[0] && 0x80)
+    if (Input::GetMouseLeftButtonTrigger())
     {
         Scene::SetScene(new Game);
         CommonData::SetCurrentStage(1);
