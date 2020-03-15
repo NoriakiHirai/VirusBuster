@@ -159,6 +159,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GameLib\audio\AyameAudio.h" />
+    <ClInclude Include="GameLib\audio\ayame\Ayame.h" />
+    <ClInclude Include="GameLib\audio\ayame\AyameManager.h" />
+    <ClInclude Include="GameLib\audio\ayame\SoundManager.h" />
+    <ClInclude Include="GameLib\audio\ayame\SoundManagerWin.h" />
+    <ClInclude Include="GameLib\audio\ayame\VoiceElement.h" />
+    <ClInclude Include="GameLib\audio\ayame\VoiceElementAyame.h" />
     <ClInclude Include="GameLib\utility\CSVReader.h" />
     <ClInclude Include="GameLib\utility\InnerTimer.h" />
     <ClInclude Include="object\Behaviour.h" />
@@ -203,6 +210,11 @@
     <ClInclude Include="object\Virus.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameLib\audio\AyameAudio.cpp" />
+    <ClCompile Include="GameLib\audio\ayame\SoundManager.cpp" />
+    <ClCompile Include="GameLib\audio\ayame\SoundManagerWin.cpp" />
+    <ClCompile Include="GameLib\audio\ayame\VoiceElement.cpp" />
+    <ClCompile Include="GameLib\audio\ayame\VoiceElementAyame.cpp" />
     <ClCompile Include="GameLib\utility\CSVReader.cpp" />
     <ClCompile Include="GameLib\utility\InnerTimer.cpp" />
     <ClCompile Include="object\Behaviour.cpp" />

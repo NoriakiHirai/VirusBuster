@@ -11,6 +11,8 @@
 #include <graphics/SpriteRenderer.h>
 #include <graphics/UIRenderer.h>
 #include <hid/Input.h>
+#include <audio/AyameAudio.h>
+#include <common/GameObject.h>
 #include "scene/Title.h"
 #include "scene/CommonData.h"
 
@@ -277,6 +279,13 @@ void AppInitialize()
     SpriteRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
     UIRenderer::Initialize();
     UIRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+
+    if (GameObject::Find("SoundManager") == NULL)
+    {
+        GameObject* sound = new GameObject();
+        sound->SetName("SoundManager");
+        sound->AddComponent("AyameAudio", new AyameAudio());
+    }
 }
 
 void AppProcess()

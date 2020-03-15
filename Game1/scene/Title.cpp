@@ -4,6 +4,7 @@
 #include <graphics/Sprite.h>
 #include <common/utility.h>
 #include <hid/Input.h>
+#include <audio/AyameAudio.h>
 #include "../Game1.h"
 #include "Game.h"
 #include "CommonData.h"
@@ -48,6 +49,11 @@ void Title::Initialize()
         0.f
     };
     title->local_scale_ = D3DXVECTOR3{ 2.f, 1.f, 1.f };
+    GameObject* sound = GameObject::Find("SoundManager");
+    AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
+    as->SetClip("");
+    as->SetLoop(true);
+    as->Play();
 }
 
 void Title::Update()
@@ -55,6 +61,9 @@ void Title::Update()
     using Hirai::Input;
     if (Input::GetMouseLeftButtonTrigger())
     {
+        GameObject* sound = GameObject::Find("SoundManager");
+        AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
+        as->Stop();
         Scene::SetScene(new Game);
         CommonData::SetCurrentStage(1);
     }
