@@ -270,6 +270,12 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void AppInitialize()
 {
+    if (GameObject::Find("SoundManager") == NULL)
+    {
+        GameObject* sound = new GameObject();
+        sound->SetName("SoundManager");
+        sound->AddComponent("AyameAudio", new AyameAudio());
+    }
     Scene::InitializeScene();
     Scene::SetScene(new Title);
     //Scene::SetScene(new Clear);
@@ -280,12 +286,6 @@ void AppInitialize()
     UIRenderer::Initialize();
     UIRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-    if (GameObject::Find("SoundManager") == NULL)
-    {
-        GameObject* sound = new GameObject();
-        sound->SetName("SoundManager");
-        sound->AddComponent("AyameAudio", new AyameAudio());
-    }
 }
 
 void AppProcess()
