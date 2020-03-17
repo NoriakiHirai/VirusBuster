@@ -52,19 +52,25 @@ void Title::Initialize()
     GameObject* sound = GameObject::Find("SoundManager");
     if (sound) {
         AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
-        as->SetClip("");
+        as->SetClip("sound/bgm.wav");
         as->SetLoop(true);
+        as->SetVolume(5.f);
         as->Play();
+
     }
 }
 
 void Title::Update()
 {
     using Hirai::Input;
+    GameObject* sound = GameObject::Find("SoundManager");
+    AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
+    float tmp;
+    if (as->isPlaying()) {
+        tmp = as->GetVolume();
+    }
     if (Input::GetMouseLeftButtonTrigger())
     {
-        GameObject* sound = GameObject::Find("SoundManager");
-        AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
         as->Stop();
         Scene::SetScene(new Game);
         CommonData::SetCurrentStage(1);

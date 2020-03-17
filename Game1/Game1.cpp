@@ -12,6 +12,7 @@
 #include <graphics/UIRenderer.h>
 #include <hid/Input.h>
 #include <audio/AyameAudio.h>
+#include <audio/ayame/VoiceElementAyame.h>
 #include <common/GameObject.h>
 #include "scene/Title.h"
 #include "scene/CommonData.h"
@@ -167,6 +168,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
            NULL);
        return 1;
    }
+
+   // サウンド
+   TCHAR str[] = { _T("GameLib/audio/ayame/Ayame.dll") };
+   CVoiceElementAyame::m_sAyameMgr.LoadDLL(str);
+   CVoiceElementAyame::m_sAyameMgr.Initialize(hWnd);
+
    return TRUE;
 }
 
@@ -309,6 +316,8 @@ void Draw() {
 }
 
 void Finalize() {
+    CVoiceElementAyame::m_sAyameMgr.Release();
+
     TextureManager::ReleaseAll();
     UIRenderer::Finalize();
     SpriteRenderer::Finalize();
