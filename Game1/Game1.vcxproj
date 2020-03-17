@@ -180,7 +180,6 @@
     <ClInclude Include="GameLib\common\utility.h" />
     <ClInclude Include="GameLib\dynamics\Collider.h" />
     <ClInclude Include="GameLib\dynamics\Math.h" />
-    <ClInclude Include="GameLib\effect\DepthShadow.h" />
     <ClInclude Include="GameLib\effect\Effect.h" />
     <ClInclude Include="GameLib\effect\GaussianBlur.h" />
     <ClInclude Include="GameLib\graphics\DirectX.h" />
@@ -225,7 +224,6 @@
     <ClCompile Include="GameLib\common\GameObject.cpp" />
     <ClCompile Include="GameLib\common\Timer.cpp" />
     <ClCompile Include="GameLib\dynamics\Collider.cpp" />
-    <ClCompile Include="GameLib\effect\DepthShadow.cpp" />
     <ClCompile Include="GameLib\effect\GaussianBlur.cpp" />
     <ClCompile Include="GameLib\graphics\DirectX.cpp" />
     <ClCompile Include="GameLib\graphics\DXUtil.cpp" />
