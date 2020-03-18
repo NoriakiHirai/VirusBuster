@@ -12,6 +12,7 @@
 #include <graphics/UIRenderer.h>
 #include <hid/Input.h>
 #include <audio/AyameAudio.h>
+#include <audio/ayame/VoiceElementAyame.h>
 #include <common/GameObject.h>
 #include "scene/Title.h"
 #include "scene/CommonData.h"
@@ -167,6 +168,12 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
            NULL);
        return 1;
    }
+
+   // サウンド
+   TCHAR str[] = { _T("GameLib/audio/ayame/Ayame.dll") };
+   CVoiceElementAyame::m_sAyameMgr.LoadDLL(str);
+   CVoiceElementAyame::m_sAyameMgr.Initialize(hWnd);
+
    return TRUE;
 }
 
@@ -271,6 +278,12 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void AppInitialize()
 {
+    if (GameObject::Find("SoundManager") == NULL)
+    {
+        GameObject* sound = new GameObject();
+        sound->SetName("SoundManager");
+        sound->AddComponent("AyameAudio", new AyameAudio());
+    }
     Scene::InitializeScene();
     Scene::SetScene(new Title);
     //Scene::SetScene(new Clear);
@@ -281,12 +294,6 @@ void AppInitialize()
     UIRenderer::Initialize();
     UIRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-    if (GameObject::Find("SoundManager") == NULL)
-    {
-        GameObject* sound = new GameObject();
-        sound->SetName("SoundManager");
-        sound->AddComponent("AyameAudio", new AyameAudio());
-    }
 }
 
 void AppProcess()
@@ -310,6 +317,8 @@ void Draw() {
 }
 
 void Finalize() {
+    CVoiceElementAyame::m_sAyameMgr.Release();
+
     TextureManager::ReleaseAll();
     UIRenderer::Finalize();
     SpriteRenderer::Finalize();

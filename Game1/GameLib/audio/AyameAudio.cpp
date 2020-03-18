@@ -8,7 +8,7 @@ AyameAudio::~AyameAudio()
 void AyameAudio::SetClip(const char* fileName)
 {
 	// tchar‚É•ÏŠ·
-	TCHAR buf[256];
+	TCHAR buf[256] = {};
 	MultiByteToWideChar(CP_OEMCP, MB_PRECOMPOSED, fileName, strlen(fileName),
 		buf, (sizeof buf) / 2);
 	m_Sound.Load(buf, 0, 0, 0);

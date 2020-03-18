@@ -60,9 +60,6 @@
     <ClInclude Include="GameLib\effect\GaussianBlur.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameLib\effect\DepthShadow.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="GameLib\effect\Effect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -192,9 +189,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameLib\graphics\DXUtil.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLib\effect\DepthShadow.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="GameLib\effect\GaussianBlur.cpp">

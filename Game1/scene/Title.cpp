@@ -50,19 +50,27 @@ void Title::Initialize()
     };
     title->local_scale_ = D3DXVECTOR3{ 2.f, 1.f, 1.f };
     GameObject* sound = GameObject::Find("SoundManager");
-    AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
-    as->SetClip("");
-    as->SetLoop(true);
-    as->Play();
+    if (sound) {
+        AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
+        as->SetClip("sound/bgm.wav");
+        as->SetLoop(true);
+        as->SetVolume(5.f);
+        as->Play();
+
+    }
 }
 
 void Title::Update()
 {
     using Hirai::Input;
+    GameObject* sound = GameObject::Find("SoundManager");
+    AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
+    float tmp;
+    if (as->isPlaying()) {
+        tmp = as->GetVolume();
+    }
     if (Input::GetMouseLeftButtonTrigger())
     {
-        GameObject* sound = GameObject::Find("SoundManager");
-        AyameAudio* as = dynamic_cast<AyameAudio*>(sound->GetComponent("AyameAudio"));
         as->Stop();
         Scene::SetScene(new Game);
         CommonData::SetCurrentStage(1);
