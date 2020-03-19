@@ -6,6 +6,8 @@
 #include <graphics/Sprite.h>
 #include <dynamics/Collider.h>
 #include <hid/Input.h>
+#include <common/Singleton.h>
+#include <audio/dx/Audio.h>
 #include "../object/Human.h"
 #include "../field/Field.h"
 #include "../object/Capsule.h"
@@ -20,6 +22,8 @@
 static const float HUMAN_CREATE_INTERVAL_MAX = 5.f;
 const float Stage4::HOUSE_POS_X = 736.f;
 const float Stage4::HOUSE_POS_Y = 64.f;
+
+static DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
 
 Stage4::Stage4()
 {
@@ -94,6 +98,8 @@ void Stage4::Initialize()
     bh1->SetVelocity({ Human::HUMAN_SPEED, 0.f, 0.f });
     
     Timer::Initialize();
+    
+    dAudio.PlayOneShot("LevelDisp");
 
     phase = 1;
     isClear = false;
@@ -164,6 +170,7 @@ void Stage4::GameMain()
         if (CollisionCheckWithHuman(*vCol)) {
             SetResultMsg(false);
             SetPhase(3);
+            dAudio.PlayOneShot("Miss");
             break;
         }
 
@@ -194,6 +201,9 @@ void Stage4::SetResultMsg(bool isWin)
 void Stage4::SetPhase(int ph)
 {
     phase = ph;
+    if (phase == 3) {
+        dAudio.Stop("BGM");
+    }
 }
 
 void Stage4::IsClear()
@@ -201,6 +211,7 @@ void Stage4::IsClear()
     if (GoalCheck(human)) {
         SetResultMsg(true);
         SetPhase(3);
+        dAudio.PlayOneShot("StageClear");
     }
 }
 
@@ -225,9 +236,10 @@ void Stage4::GameResult()
     using Hirai::Input;
     if (Input::GetMouseLeftButtonTrigger())
     {
+        dAudio.PlayOneShot("Decision");
         resultMsg->SetActive(false);
         if (isClear) {
-            // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
+            // for debug
             //Scene::SetScene(new Title);
             Scene::SetScene(new Stage5);
         }
@@ -244,6 +256,8 @@ void Stage4::DispStageNum()
     waitTime -= Timer::DeltaTime();
     if (waitTime <= 0.f) {
         if (stageName->UpdateFade()) {
+            dAudio.Stop("LevelDisp");
+            dAudio.PlayLoop("BGM");
             SetPhase(2);
             stageName->SetActive(false);
         }

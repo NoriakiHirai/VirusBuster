@@ -6,6 +6,8 @@
 #include <graphics/Sprite.h>
 #include <dynamics/Collider.h>
 #include <hid/Input.h>
+#include <common/Singleton.h>
+#include <audio/dx/Audio.h>
 #include "../object/Human.h"
 #include "../field/Field.h"
 #include "../object/Capsule.h"
@@ -20,6 +22,8 @@
 static const float HUMAN_CREATE_INTERVAL_MAX = 5.f;
 const float Stage3::HOUSE_POS_X = 736.f;
 const float Stage3::HOUSE_POS_Y = 64.f;
+
+static DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
 
 Stage3::Stage3()
 {
@@ -129,6 +133,8 @@ void Stage3::Initialize()
 
     Timer::Initialize();
 
+    dAudio.PlayOneShot("LevelDisp");
+
     phase = 1;
     isClear = false;
 }
@@ -211,6 +217,7 @@ void Stage3::GameMain()
         if (CollisionCheckWithHuman(*vCol)) {
             SetResultMsg(false);
             SetPhase(3);
+            dAudio.PlayOneShot("Miss");
             break;
         }
 
@@ -241,6 +248,9 @@ void Stage3::SetResultMsg(bool isWin)
 void Stage3::SetPhase(int ph)
 {
     phase = ph;
+    if (phase == 3) {
+        dAudio.Stop("BGM");
+    }
 }
 
 void Stage3::IsClear()
@@ -254,6 +264,7 @@ void Stage3::IsClear()
     if (allFinished) {
         SetResultMsg(true);
         SetPhase(3);
+        dAudio.PlayOneShot("StageClear");
     }
 }
 
@@ -297,6 +308,8 @@ void Stage3::DispStageNum()
     waitTime -= Timer::DeltaTime();
     if (waitTime <= 0.f) {
         if (stageName->UpdateFade()) {
+            dAudio.Stop("LevelDisp");
+            dAudio.PlayLoop("BGM");
             SetPhase(2);
             stageName->SetActive(false);
         }

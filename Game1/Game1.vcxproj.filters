@@ -156,7 +156,31 @@
     <ClInclude Include="GameLib\audio\ayame\VoiceElementAyame.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GameLib\audio\AyameAudio.h">
+    <ClInclude Include="GameLib\audio\dx\Audio.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\common\Singleton.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\AyameManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\SoundManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\SoundManagerWin.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\VoiceElement.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\VoiceElementAyame.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\audio\ayameAudio\AyameAudio.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLib\utility\StringHelper.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -275,7 +299,28 @@
     <ClCompile Include="GameLib\audio\ayame\VoiceElementAyame.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="GameLib\audio\AyameAudio.cpp">
+    <ClCompile Include="GameLib\audio\dx\Audio.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\common\Singleton.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\SoundManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\SoundManagerWin.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\VoiceElement.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\VoiceElementAyame.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\audio\ayameAudio\AyameAudio.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLib\utility\StringHelper.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -291,5 +336,8 @@
     <Image Include="Game1.ico">
       <Filter>リソース ファイル</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Game1.aps" />
   </ItemGroup>
 </Project>

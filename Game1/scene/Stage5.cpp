@@ -6,6 +6,8 @@
 #include <graphics/Sprite.h>
 #include <dynamics/Collider.h>
 #include <hid/Input.h>
+#include <common/Singleton.h>
+#include <audio/dx/Audio.h>
 #include "../object/Human.h"
 #include "../field/Field.h"
 #include "../object/Capsule.h"
@@ -17,6 +19,8 @@
 static const float HUMAN_CREATE_INTERVAL_MAX = 5.f;
 const float Stage5::HOUSE_POS_X = 736.f;
 const float Stage5::HOUSE_POS_Y = 64.f;
+
+static DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
 
 Stage5::Stage5()
 {
@@ -100,6 +104,8 @@ void Stage5::Initialize()
 
     Timer::Initialize();
 
+    dAudio.PlayOneShot("LevelDisp");
+
     phase = 1;
     isClear = false;
 }
@@ -171,11 +177,13 @@ void Stage5::GameMain()
         if (CollisionCheckWithHuman(*vCol, *hCol1)) {
             SetResultMsg(false);
             SetPhase(3);
+            dAudio.PlayOneShot("Miss");
             break;
         }
         if (CollisionCheckWithHuman(*vCol, *hCol2)) {
             SetResultMsg(false);
             SetPhase(3);
+            dAudio.PlayOneShot("Miss");
             break;
         }
 
@@ -206,6 +214,9 @@ void Stage5::SetResultMsg(bool isWin)
 void Stage5::SetPhase(int ph)
 {
     phase = ph;
+    if (phase == 3) {
+        dAudio.Stop("BGM");
+    }
 }
 
 void Stage5::IsClear()
@@ -213,6 +224,7 @@ void Stage5::IsClear()
     if (GoalCheck(human) && GoalCheck(human2)) {
         SetResultMsg(true);
         SetPhase(3);
+        dAudio.PlayOneShot("StageClear");
     }
 }
 
@@ -237,6 +249,7 @@ void Stage5::GameResult()
     using Hirai::Input;
     if (Input::GetMouseLeftButtonTrigger())
     {
+        dAudio.PlayOneShot("Decision");
         resultMsg->SetActive(false);
         if (isClear) {
             // ウイルスの削除は、SetSceneからのFinalize()呼び出しの中で実行される
@@ -255,6 +268,8 @@ void Stage5::DispStageNum()
     waitTime -= Timer::DeltaTime();
     if (waitTime <= 0.f) {
         if (stageName->UpdateFade()) {
+            dAudio.Stop("LevelDisp");
+            dAudio.PlayLoop("BGM");
             SetPhase(2);
             stageName->SetActive(false);
         }

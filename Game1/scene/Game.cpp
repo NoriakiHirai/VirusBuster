@@ -7,6 +7,8 @@
 #include <graphics/Sprite.h>
 #include <dynamics/Collider.h>
 #include <hid/Input.h>
+#include <common/Singleton.h>
+#include <audio/dx/Audio.h>
 #include "../object/Human.h"
 #include "../field/Field.h"
 #include "../object/Capsule.h"
@@ -18,6 +20,8 @@
 
 const float Game::HOUSE_POS_X = 736.f;
 const float Game::HOUSE_POS_Y = 536.f;
+
+static DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
 
 Game::Game()
 {
@@ -85,6 +89,8 @@ void Game::Initialize()
     GameObject::InitObjectAll();
     Timer::Initialize();
 
+    dAudio.PlayOneShot("LevelDisp");
+
     phase = 1;
     isClear = false;
 }
@@ -149,6 +155,7 @@ void Game::GameMain()
             human->SetActive(false);
             SetResultMsg(false);
             SetPhase(3);
+            dAudio.PlayOneShot("Miss");
             break;
         }
 
@@ -179,6 +186,9 @@ void Game::SetResultMsg(bool isWin)
 void Game::SetPhase(int ph)
 {
     phase = ph;
+    if (phase == 3) {
+        dAudio.Stop("BGM");
+    }
 }
 
 void Game::IsClear()
@@ -188,24 +198,26 @@ void Game::IsClear()
     {
         SetResultMsg(true);
         SetPhase(3);
+        dAudio.PlayOneShot("StageClear");
     }
 }
 
 void Game::GameResult()
 {
-    // クリックすると次のステージへ
     using Hirai::Input;
     if (Input::GetMouseLeftButtonTrigger())
     {
+        dAudio.PlayOneShot("Decision");
         resultMsg->SetActive(false);
-        field->Finalize();
         if (isClear) {
+
             CommonData::SetCurrentStage(2);
             Scene::SetScene(new Stage2);
         }
         else {
             SetPhase(1);
             Initialize();
+            field->Finalize();
         }
     }
 }
@@ -216,6 +228,8 @@ void Game::DispStageNum()
     waitTime -= Timer::DeltaTime();
     if (waitTime <= 0.f) {
         if (stageName->UpdateFade()) {
+            dAudio.Stop("LevelDisp");
+            dAudio.PlayLoop("BGM");
             SetPhase(2);
             stageName->SetActive(false);
         }

@@ -159,15 +159,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GameLib\audio\AyameAudio.h" />
+    <ClInclude Include="GameLib\audio\ayameAudio\AyameAudio.h" />
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\AyameManager.h" />
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\SoundManager.h" />
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\SoundManagerWin.h" />
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\VoiceElement.h" />
+    <ClInclude Include="GameLib\audio\ayameAudio\ayame\VoiceElementAyame.h" />
     <ClInclude Include="GameLib\audio\ayame\Ayame.h" />
     <ClInclude Include="GameLib\audio\ayame\AyameManager.h" />
     <ClInclude Include="GameLib\audio\ayame\SoundManager.h" />
     <ClInclude Include="GameLib\audio\ayame\SoundManagerWin.h" />
     <ClInclude Include="GameLib\audio\ayame\VoiceElement.h" />
     <ClInclude Include="GameLib\audio\ayame\VoiceElementAyame.h" />
+    <ClInclude Include="GameLib\audio\dx\Audio.h" />
+    <ClInclude Include="GameLib\common\Singleton.h" />
     <ClInclude Include="GameLib\utility\CSVReader.h" />
     <ClInclude Include="GameLib\utility\InnerTimer.h" />
+    <ClInclude Include="GameLib\utility\StringHelper.h" />
     <ClInclude Include="object\Behaviour.h" />
     <ClInclude Include="object\Capsule.h" />
     <ClInclude Include="field\Field.h" />
@@ -209,13 +217,20 @@
     <ClInclude Include="object\Virus.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameLib\audio\AyameAudio.cpp" />
+    <ClCompile Include="GameLib\audio\ayameAudio\AyameAudio.cpp" />
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\SoundManager.cpp" />
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\SoundManagerWin.cpp" />
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\VoiceElement.cpp" />
+    <ClCompile Include="GameLib\audio\ayameAudio\ayame\VoiceElementAyame.cpp" />
     <ClCompile Include="GameLib\audio\ayame\SoundManager.cpp" />
     <ClCompile Include="GameLib\audio\ayame\SoundManagerWin.cpp" />
     <ClCompile Include="GameLib\audio\ayame\VoiceElement.cpp" />
     <ClCompile Include="GameLib\audio\ayame\VoiceElementAyame.cpp" />
+    <ClCompile Include="GameLib\audio\dx\Audio.cpp" />
+    <ClCompile Include="GameLib\common\Singleton.cpp" />
     <ClCompile Include="GameLib\utility\CSVReader.cpp" />
     <ClCompile Include="GameLib\utility\InnerTimer.cpp" />
+    <ClCompile Include="GameLib\utility\StringHelper.cpp" />
     <ClCompile Include="object\Behaviour.cpp" />
     <ClCompile Include="object\Capsule.cpp" />
     <ClCompile Include="field\Field.cpp" />
@@ -255,6 +270,9 @@
   <ItemGroup>
     <Image Include="Game1.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Game1.aps" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

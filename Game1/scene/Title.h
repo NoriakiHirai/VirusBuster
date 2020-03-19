@@ -9,8 +9,6 @@ class Title : public Scene
 {
 private:
     Plane* title;
-    Human* human;
-    Plane* house;
     std::vector<Plane*> viruses;
 
 public:

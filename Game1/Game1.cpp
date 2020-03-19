@@ -11,8 +11,8 @@
 #include <graphics/SpriteRenderer.h>
 #include <graphics/UIRenderer.h>
 #include <hid/Input.h>
-#include <audio/AyameAudio.h>
-#include <audio/ayame/VoiceElementAyame.h>
+#include <common/Singleton.h>
+#include <audio/dx/Audio.h>
 #include <common/GameObject.h>
 #include "scene/Title.h"
 #include "scene/CommonData.h"
@@ -170,9 +170,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    }
 
    // サウンド
-   TCHAR str[] = { _T("GameLib/audio/ayame/Ayame.dll") };
-   CVoiceElementAyame::m_sAyameMgr.LoadDLL(str);
-   CVoiceElementAyame::m_sAyameMgr.Initialize(hWnd);
+   DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
+   dAudio.Initialize(hWnd);
 
    return TRUE;
 }
@@ -278,12 +277,6 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void AppInitialize()
 {
-    if (GameObject::Find("SoundManager") == NULL)
-    {
-        GameObject* sound = new GameObject();
-        sound->SetName("SoundManager");
-        sound->AddComponent("AyameAudio", new AyameAudio());
-    }
     Scene::InitializeScene();
     Scene::SetScene(new Title);
     //Scene::SetScene(new Clear);
@@ -294,6 +287,14 @@ void AppInitialize()
     UIRenderer::Initialize();
     UIRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
+    // 音源読み込み
+    DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
+    dAudio.LoadAudio("sound/bgm.wav", "BGM");
+    dAudio.LoadAudio("sound/levelDisp.wav", "LevelDisp");
+    dAudio.LoadAudio("sound/decision.wav", "Decision");
+    dAudio.LoadAudio("sound/gameClear.wav", "GameClear");
+    dAudio.LoadAudio("sound/miss.wav", "Miss");
+    dAudio.LoadAudio("sound/stageClear.wav", "StageClear");
 }
 
 void AppProcess()
@@ -317,8 +318,6 @@ void Draw() {
 }
 
 void Finalize() {
-    CVoiceElementAyame::m_sAyameMgr.Release();
-
     TextureManager::ReleaseAll();
     UIRenderer::Finalize();
     SpriteRenderer::Finalize();
