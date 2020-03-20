@@ -104,7 +104,7 @@ void Stage5::Initialize()
 
     Timer::Initialize();
 
-    dAudio.PlayOneShot("LevelDisp");
+    //dAudio.PlayOneShot("LevelDisp");
 
     phase = 1;
     isClear = false;
@@ -113,7 +113,6 @@ void Stage5::Initialize()
 void Stage5::Update()
 {
     Timer::Update();
-    IsClear();
 
     switch (phase)
     {
@@ -121,6 +120,7 @@ void Stage5::Update()
         DispStageNum();
         break;
     case 2:
+        IsClear();
         GameMain();
         break;
     case 3:
@@ -268,7 +268,7 @@ void Stage5::DispStageNum()
     waitTime -= Timer::DeltaTime();
     if (waitTime <= 0.f) {
         if (stageName->UpdateFade()) {
-            dAudio.Stop("LevelDisp");
+            //dAudio.Stop("LevelDisp");
             dAudio.PlayLoop("BGM");
             SetPhase(2);
             stageName->SetActive(false);

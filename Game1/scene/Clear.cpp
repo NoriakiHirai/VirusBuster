@@ -4,11 +4,15 @@
 #include <graphics/Sprite.h>
 #include <common/utility.h>
 #include <hid/Input.h>
+#include <common/Singleton.h>
+#include <audio/dx/Audio.h>
 #include "../Game1.h"
 #include "Title.h"
 #include "CommonData.h"
 #include "../object/Human.h"
 #include "../object/Behaviour.h"
+
+static DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
 
 Clear::Clear()
 {
@@ -50,6 +54,7 @@ void Clear::Initialize()
     human2->AddComponent("Behaviour", bh5);
    
     GameObject::InitObjectAll();
+    dAudio.PlayOneShot("GameClear");
 }
 
 void Clear::Update()
@@ -57,6 +62,8 @@ void Clear::Update()
     using Hirai::Input;
     if (Input::GetMouseLeftButtonTrigger())
     {
+        dAudio.Stop("GameClear");
+        dAudio.PlayOneShot("Decision");
         Scene::SetScene(new Title);
         CommonData::SetCurrentStage(1);
     }

@@ -34,6 +34,7 @@ void Title::Initialize()
     };
     title->local_scale_ = D3DXVECTOR3{ 2.f, 1.f, 1.f };
     
+    dAudio.Stop("Decision");
     dAudio.PlayLoop("BGM");
 }
 

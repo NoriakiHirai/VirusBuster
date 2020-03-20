@@ -277,6 +277,15 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void AppInitialize()
 {
+    // 音源読み込み
+    DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
+    dAudio.LoadAudio("sound/bgm.wav", "BGM");
+    //dAudio.LoadAudio("sound/levelDisp.wav", "LevelDisp");
+    dAudio.LoadAudio("sound/decision.wav", "Decision");
+    dAudio.LoadAudio("sound/gameClear.wav", "GameClear");
+    dAudio.LoadAudio("sound/miss.wav", "Miss");
+    dAudio.LoadAudio("sound/stageClear.wav", "StageClear");
+
     Scene::InitializeScene();
     Scene::SetScene(new Title);
     //Scene::SetScene(new Clear);
@@ -287,14 +296,6 @@ void AppInitialize()
     UIRenderer::Initialize();
     UIRenderer::SetScreenSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
 
-    // 音源読み込み
-    DirectAudio& dAudio = singleton<DirectAudio>::GetInstance();
-    dAudio.LoadAudio("sound/bgm.wav", "BGM");
-    dAudio.LoadAudio("sound/levelDisp.wav", "LevelDisp");
-    dAudio.LoadAudio("sound/decision.wav", "Decision");
-    dAudio.LoadAudio("sound/gameClear.wav", "GameClear");
-    dAudio.LoadAudio("sound/miss.wav", "Miss");
-    dAudio.LoadAudio("sound/stageClear.wav", "StageClear");
 }
 
 void AppProcess()
